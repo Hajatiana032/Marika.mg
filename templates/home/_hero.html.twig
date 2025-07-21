@@ -1,0 +1,38 @@
+<section class="hero-90">
+    <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade carousel-hero"
+         data-bs-ride="carousel"
+    >
+        <div class="carousel-inner h-100">
+            <div class="carousel-item active h-100">
+                <img src="{{ asset('img/hero/hero-1.jpg') }}" class="d-block object-fit-cover w-100 h-100" alt="...">
+            </div>
+            <div class="carousel-item h-100">
+                <img src="{{ asset('img/hero/hero-2.jpg') }}" class="d-block object-fit-cover w-100 h-100" alt="...">
+            </div>
+            <div class="carousel-item h-100">
+                <img src="{{ asset('img/hero/hero-3.jpg') }}" class="d-block object-fit-cover w-100 h-100" alt="...">
+            </div>
+        </div>
+    </div>
+    <div class="hero-overlay position-absolute w-100 top-0 h-100 z-1 align-content-center
+    text-center text-white">
+        <!-- Text Hero -->
+        <h1 class="display-5 fw-bold">
+            Le meilleur d’ici et d’ailleurs
+        </h1>
+        <span class="lead mb-4" {{ stimulus_controller('symfony/ux-typed', {
+            strings: ['<p>Des produits importés et locaux soigneusement sélectionnés pour vous. <br><span
+            class="fw-bold">Marika
+            .mg</span>, votre boutique de
+            confiance à Madagascar.</p>'],
+            startDelay: 500,
+            backDelay: 10000,
+            smartBackspace: true,
+            backSpeed: 10,
+            showCursor: false,
+        }) }}>
+        </span>
+        <a href="#shop" class="btn btn-blue-700 btn-lg">Découvrir la boutique</a>
+        <a href="#categories" class="btn btn-outline-light btn-lg">Explorer les catégories</a>
+    </div>
+</section>
