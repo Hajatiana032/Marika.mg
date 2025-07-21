@@ -279,6 +279,9 @@
             "ref": "e4b951d7de760751e170c6d2e3b565cf9ed5182f"
         }
     },
+    "symfony/ux-typed": {
+        "version": "v2.27.0"
+    },
     "symfony/validator": {
         "version": "7.3",
         "recipe": {

@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "../../vendor/twbs/bootstrap/scss/functions";
+@import "../../vendor/twbs/bootstrap/scss/variables";
+
+// Create your own map
+$custom-colors: (
+    "blue-600": #1C64F2
+);
+
+// Merge the maps
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+:root {
+    --blue-600: #1C64F2;
+}
+
+@import "../../vendor/twbs/bootstrap/scss/bootstrap";
+
+body {
+    font-family: Inter, sans-serif;
+    font-size: 18px;
+}
+
+.progress-bar {
+    background: var(--blue-600);
+}
+
+.navbar {
+    min-height: 10vh;
+    --bs-navbar-active-color: var(--blue-600);
+}
+
+.navbar-brand {
+    font-weight: bolder;
+    --bs-navbar-brand-color: var(--blue-600);
+    --bs-navbar-brand-hover-color: var(--blue-600);
+}
+
+.navbar-toggler {
+    border: 0;
+    --bs-navbar-toggler-focus-width: 2.5px var(--blue-600);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%231A56DB' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.nav-link {
+    --bs-nav-link-font-weight: 600;
+    --bs-nav-link-hover-color: var(--blue-600);
+}
+
+.mega-menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.mega-menu li a {
+    padding: .5em 1em;
+}
+
+@media screen and (min-width: 992px) {
+    .dropdown:hover .dropdown-menu {
+        display: flex;
+    }
+    .mega-menu.show {
+        display: flex;
+        margin-top: 0;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .mega-menu.show {
+        max-height: 250px;
+        overflow-y: scroll;
+    }
+}
+
+.hero-90, .carousel-hero, .hero-overlay {
+    height: 90vh;
+}
+
+.hero-overlay {
+    background: linear-gradient(to top right, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.71), rgba(0, 0, 0, 0.83));
+    bottom: 0;
+}
+
+.btn-lg {
+    --bs-btn-font-weight: 600;
+    --bs-btn-border-width: 2.5px;
+}
+
+.btn-outline-light {
+    --bs-btn-hover-color: var(--blue-600);
+    --bs-btn-active-color: var(--blue-600);
+}
