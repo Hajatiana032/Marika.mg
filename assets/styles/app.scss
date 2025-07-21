@@ -19,6 +19,8 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 body {
     font-family: Inter, sans-serif;
     font-size: 18px;
+    margin: 0;
+    padding: 0;
 }
 
 .progress-bar {
@@ -50,31 +52,33 @@ body {
     --bs-nav-link-hover-color: var(--blue-600);
 }
 
-.mega-menu ul {
-    list-style: none;
-    padding: 0;
+
+.dropdown-item {
+    --bs-dropdown-link-hover-bg: none;
+    --bs-dropdown-link-hover-color: var(--blue-600);
+    transition: 0.5s;
+    font-weight: 600;
 }
 
-.mega-menu li a {
-    padding: .5em 1em;
+.menu-area {
+    position: static;
 }
 
-@media screen and (min-width: 992px) {
-    .dropdown:hover .dropdown-menu {
-        display: flex;
-    }
-    .mega-menu.show {
-        display: flex;
-        margin-top: 0;
-    }
+.mega-menu {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    left: 0;
+    right: 0;
 }
 
 @media screen and (max-width: 992px) {
-    .mega-menu.show {
-        max-height: 250px;
-        overflow-y: scroll;
+    .mega-menu {
+        max-height: 30vh;
+        overflow-y: auto;
     }
 }
+
 
 .hero-90, .carousel-hero, .hero-overlay {
     height: 90vh;
