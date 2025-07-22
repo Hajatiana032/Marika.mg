@@ -1,0 +1,18 @@
+<div class="card card-product m-auto border-emerald-500 border-2">
+    <div class="card-header card-header-product border-0 bg-transparent">
+        <img src="{{ asset('img/upload/product_thumbnail/' ~ product.thumbnail) }}" alt=""
+             class="w-100 h-100 object-fit-contain">
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{ product.title }}</h5>
+        <p class="lead text-truncate">{{ product.description }}</p>
+        <div class="d-flex">
+            <p class="text-blue-600 fw-bold my-auto">{{ product.price|format_currency('MGA',{},'fr_MG') }}</p>
+            <button class="btn btn-emerald-500 mb-2 btn-card-detail ms-auto"><i class="fa
+                        fa-info fa-2x"></i></button>
+        </div>
+    </div>
+    <div class="card-footer border-0 bg-transparent">
+        <button class="btn btn-blue-600 w-100">Ajouter au panier</button>
+    </div>
+</div>
