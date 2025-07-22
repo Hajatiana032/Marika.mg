@@ -40,6 +40,7 @@ class CategoryFixture extends Fixture
             $category->setSlug($data['slug']);
 
             $manager->persist($category);
+            $this->addReference('category-product-'.$data['slug'], $category);
         }
         $manager->flush();
     }
