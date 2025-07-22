@@ -127,3 +127,16 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.card-img-category {
+    transform-origin: center center;
+    transition: transform .5s ease-in-out;
+}
+
+.card-category:hover .card-img-category {
+    transform: scale(1.2);
+}
+
+.title-card-category {
+    background: linear-gradient(to top right, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.71), rgba(0, 0, 0, 0.83));
+}
