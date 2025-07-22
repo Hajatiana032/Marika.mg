@@ -11,13 +11,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ProductFixture extends Fixture
 {
-    private string $uploadsDir;
+    private string $uploadDir;
 
     public function __construct(
         private readonly HttpClientInterface $client,
         private readonly SluggerInterface $slugger
     ) {
-        $this->uploadsDir = __DIR__.'/../../assets/img/uploads/product_thumbnail/';
+        $this->uploadDir = __DIR__.'/../../assets/img/upload/product_thumbnail/';
     }
 
     public function load(ObjectManager $manager): void
@@ -25,6 +25,7 @@ class ProductFixture extends Fixture
         $response = $this->client->request('GET', 'https://dummyjson.com/products?limit=0');
         $content = $response->toArray();
 
+        $this->clearDirectory();
 
         foreach ($content['products'] as $item) {
             /**
@@ -35,7 +36,7 @@ class ProductFixture extends Fixture
                 continue;
             }
 
-            $this->downloadThumbnail($item['thumbnail']);
+            $filename = $this->downloadThumbnail($item['thumbnail']);
             $product = new Product();
             $product->setTitle($item['title']);
             $product->setSlug($this->slugger->slug($item['title'])->lower());
@@ -43,6 +44,7 @@ class ProductFixture extends Fixture
             $product->setPrice($item['price']);
             $product->setStock($item['stock']);
             $product->setCategory($category);
+            $product->setThumbnail($filename);
 
             $manager->persist($product);
         }
@@ -50,6 +52,26 @@ class ProductFixture extends Fixture
         $manager->flush();
     }
 
+    private function clearDirectory(): void
+    {
+        if (is_dir($this->uploadDir)) {
+            foreach (glob($this->uploadDir.'*') as $file) {
+                if (is_file($file)) {
+                    unlink($file);
+                }
+            }
+        } else {
+            // Si le dossier n’existe pas, on le crée
+            mkdir($this->uploadDir, 0755, true);
+        }
+    }
+
+    /**
+     * Get category reference by slug.
+     *
+     * @param  string  $slug
+     * @return Category|null
+     */
     private function getCategoryReference(string $slug): ?Category
     {
         $refKey = CategoryFixture::CATEGORY_PRODUCT_REFERENCE.$slug;
@@ -60,8 +82,10 @@ class ProductFixture extends Fixture
         return $this->getReference($refKey, Category::class);
     }
 
-    private function downloadThumbnail(?string $url): ?string
-    {
+
+    private function downloadThumbnail(
+        ?string $url
+    ): ?string {
         if ( ! $url) {
             return null;
         }
@@ -70,33 +94,8 @@ class ProductFixture extends Fixture
         $content = $resp->getContent(false);
         $extension = pathinfo($url, PATHINFO_EXTENSION);
         $filename = uniqid('prod-').'.'.$extension;
-        file_put_contents($this->uploadsDir.$filename, $content);
+        file_put_contents($this->uploadDir.$filename, $content);
 
         return $filename;
     }
-
-//    public function downloadThumbnail()
-//    {
-//        $uploadDir = __DIR__.'/../../assets/img/uploads/product_thumbnail/';
-//        if (is_dir($uploadDir)) {
-//            foreach (glob($uploadDir.'*') as $file) {
-//                if (is_file($file)) {
-//                    unlink($file);
-//                }
-//            }
-//        } else {
-//            // Si le dossier n’existe pas, on le crée
-//            mkdir($uploadDir, 0755, true);
-//        }
-//
-//        if ( ! empty($item['thumbnail'])) {
-//            $responseThumbnail = $this->client->request('GET', $item['thumbnail'], ['buffer' => false]);
-//            $thumbnailContent = $responseThumbnail->getContent(false);
-//            $extension = pathinfo($item['thumbnail'], PATHINFO_EXTENSION);
-//            $fileName = uniqid('prod-').'.'.$extension;
-//            $filePath = $uploadDir.$fileName;
-//
-//            return file_put_contents($filePath, $thumbnailContent);
-//        }
-//    }
 }

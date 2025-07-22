@@ -38,4 +38,8 @@ return [
     'typed.js' => [
         'version' => '2.1.0',
     ],
+    '@fortawesome/fontawesome-free/css/all.min.css' => [
+        'version' => '7.0.0',
+        'type' => 'css',
+    ],
 ];

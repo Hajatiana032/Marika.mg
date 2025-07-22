@@ -4,7 +4,8 @@
 
 // Create your own map
 $custom-colors: (
-    "blue-600": #1C64F2
+    "blue-600": #1C64F2,
+    "emerald-500":#00BC7DFF
 );
 
 // Merge the maps
@@ -12,6 +13,7 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 
 :root {
     --blue-600: #1C64F2;
+    --emerald-500: #00BC7DFF;
 }
 
 @import "../../vendor/twbs/bootstrap/scss/bootstrap";
@@ -97,4 +99,31 @@ body {
 .btn-outline-light {
     --bs-btn-hover-color: var(--blue-600);
     --bs-btn-active-color: var(--blue-600);
+}
+
+.btn-emerald-500 {
+    --bs-btn-bg: var(--emerald-500);
+    --bs-btn-color: white;
+    --bs-btn-hover-color: white;
+    --bs-btn-active-color: white;
+    --bs-btn-hover-bg: oklch(59.6% 0.145 163.225);
+    --bs-btn-border-color: var(--emerald-500);
+    --bs-btn-hover-border-color: oklch(59.6% 0.145 163.225);
+}
+
+.card-product {
+    max-width: 350px;
+}
+
+.card-header-product {
+    height: 250px;
+}
+
+.btn-card-detail {
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
