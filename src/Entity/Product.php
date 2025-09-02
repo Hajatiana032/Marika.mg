@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Trait\DateTimeTrait;
 use App\Repository\ProductRepository;
+use DateMalformedStringException;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -45,6 +46,15 @@ class Product
 
     #[ORM\ManyToOne(inversedBy: 'product')]
     private ?Brand $brand = null;
+
+    /**
+     * @throws DateMalformedStringException
+     */
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable('now', new \DateTimeZone('Indian/Antananarivo'));
+        $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('Indian/Antananarivo'));
+    }
 
     public function getId(): ?int
     {

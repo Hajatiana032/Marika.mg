@@ -2,11 +2,17 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Brand;
 use App\Entity\Category;
 use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ProductFixture extends Fixture
@@ -20,6 +26,13 @@ class ProductFixture extends Fixture
         $this->uploadDir = __DIR__.'/../../assets/img/upload/product_thumbnail/';
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function load(ObjectManager $manager): void
     {
         $response = $this->client->request('GET', 'https://dummyjson.com/products?limit=0');
@@ -36,6 +49,16 @@ class ProductFixture extends Fixture
                 continue;
             }
 
+            if ( ! isset($item['brand'])) {
+                continue;
+            }
+            $slug = $this->slugger->slug($item['brand'])->lower();
+            $brand = $this->getBrandReference($slug);
+
+            if ( ! $brand) {
+                continue;
+            }
+
             $filename = $this->downloadThumbnail($item['thumbnail']);
             $product = new Product();
             $product->setTitle($item['title']);
@@ -45,6 +68,7 @@ class ProductFixture extends Fixture
             $product->setStock($item['stock']);
             $product->setCategory($category);
             $product->setThumbnail($filename);
+            $product->setBrand($brand);
 
             $manager->persist($product);
         }
@@ -82,7 +106,22 @@ class ProductFixture extends Fixture
         return $this->getReference($refKey, Category::class);
     }
 
+    private function getBrandReference(string $slug): ?Brand
+    {
+        $refKey = BrandFixture::BRAND_PRODUCT_REFERENCE.$slug;
+        if ( ! $this->hasReference($refKey, Brand::class)) {
+            return null;
+        }
 
+        return $this->getReference($refKey, Brand::class);
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     private function downloadThumbnail(
         ?string $url
     ): ?string {

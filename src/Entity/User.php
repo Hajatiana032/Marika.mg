@@ -68,6 +68,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $avatar = null;
+    
+    public function __construct()
+    {
+        $this->createdAt = new  \DateTimeImmutable('now', new \DateTimeZone('Indian/Antananarivo'));
+        $this->updatedAt = new  \DateTimeImmutable('now', new \DateTimeZone('Indian/Antananarivo'));
+    }
 
     public function getId(): ?int
     {

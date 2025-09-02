@@ -11,7 +11,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class UserFixture extends Fixture
 {
-    public const USER_TESTIMONIAL_REFERENCE = 'user-testimonial-';
+    public const string USER_TESTIMONIAL_REFERENCE = 'user-testimonial-';
     private string $uploadDir;
 
     public function __construct(
