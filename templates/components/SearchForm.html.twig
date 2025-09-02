@@ -1,0 +1,9 @@
+<div{{ attributes }} class="m-auto">
+    <!-- component HTML -->
+    {{ form_start(form, {action: path('app_shop'), method: 'get'}) }}
+    <div class="input-group">
+        {{ form_widget(form.q) }}
+        <button type="submit" class="btn btn-blue-600 input-group-text"><i class="fa fa-search"></i></button>
+    </div>
+    {{ form_end(form) }}
+</div>
