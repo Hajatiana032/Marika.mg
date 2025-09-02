@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - {{ product.slug }} {% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="card product-detail">
+            <div class="card-body">
+                <div class="row">
+                    {{ include('partials/_flash_messages.html.twig') }}
+                    <div class="col-xl-6">
+                        <h4>{{ product.title }}</h4>
+                        <img src="{{ asset('img/upload/product_thumbnail/' ~ product.thumbnail) }}"
+                             alt="{{ product.slug }}"
+                             class="img-fluid" width="500" height="500">
+                    </div>
+                    <div class="col-xl-6">
+                        <p>{{ product.description }}</p>
+                        <h4 class="fw-semibold">Prix: {{ product.price|format_currency('MGA', {}, 'Fr_mg') }}</h4>
+                        <a href="{{ path('app_cart_add', {id: product.id}) }}" class="btn btn-emerald-500">Ajouter au
+                            panier</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

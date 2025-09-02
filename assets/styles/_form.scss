@@ -1,0 +1,27 @@
+.form-control {
+    border: 2px solid;
+    border-color: var(--blue-600);
+
+    &:focus {
+        border-color: var(--blue-600);
+        box-shadow: none;
+    }
+}
+
+.form-check-input {
+    border: 0.5px solid var(--blue-600);
+    box-shadow: none;
+    cursor: pointer;
+
+    &:focus {
+        box-shadow: none;
+    }
+
+    &:checked {
+        background-color: var(--blue-600);
+    }
+}
+
+.form-check-label {
+    cursor: pointer;
+}

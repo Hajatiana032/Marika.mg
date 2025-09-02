@@ -89,7 +89,6 @@ class ProductFixture extends Fixture
         if ( ! $url) {
             return null;
         }
-
         $resp = $this->client->request('GET', $url, ['buffer' => false]);
         $content = $resp->getContent(false);
         $extension = pathinfo($url, PATHINFO_EXTENSION);

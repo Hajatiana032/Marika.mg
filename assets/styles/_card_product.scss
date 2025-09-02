@@ -1,0 +1,21 @@
+
+.card-product {
+    max-width: 350px;
+}
+
+.card-header-product {
+    height: 250px;
+}
+
+.btn-card-detail {
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-detail {
+    box-shadow: 0 0 5px 5px var(--emerald-500);
+}

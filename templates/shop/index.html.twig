@@ -1,7 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - boutique{% endblock %}
+{% block title %}{{ parent() }} - Boutique{% endblock %}
 
 {% block body %}
-
+    <div class="container">
+        <h1 class="display-5">Nos produits</h1>
+        <div class="row gy-2">
+            {% if app.request.query.get('q') %}
+                <div class="d-flex">
+                    <h4>Mots-clés: {{ app.request.query.get('q')|replace({' ':'+'}) }}</h4>
+                    <a href="{{ path('app_shop') }}" class="link-emerald-500 ms-1"><i
+                            class="fa fa-close"></i></a>
+                </div>
+            {% endif %}
+            {% if app.request.query.get('c') %}
+                <div class="d-flex">
+                    <h4>Catégories: {{ app.request.query.get('c')|replace({'-':' '})|capitalize }}</h4>
+                    <a href="{{ path('app_shop') }}" class="link-emerald-500 ms-1"><i
+                            class="fa fa-close"></i></a>
+                </div>
+            {% endif %}
+            <div class="col-lg-12 col-xl-3">
+                {{ include('shop/_filter_form.html.twig', {form: form}) }}
+            </div>
+            <div class="col-lg-12 col-xl-9">
+                {{ include('partials/_flash_messages.html.twig') }}
+                <div class="row gy-2">
+                    {% for product in products %}
+                        <div class="col-lg-4">
+                            {{ include('partials/_product_card.html.twig', {product: product}) }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger text-danger text-center fw-bold">
+                            Aucun résultat
+                        </div>
+                    {% endfor %}
+                    <div class="d-flex">
+                        <div class="ms-auto">
+                            {{ knp_pagination_render(products) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

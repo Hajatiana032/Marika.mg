@@ -1,42 +1,33 @@
-{#
-/**
- * @file
- * Twitter Bootstrap v4 Sliding pagination control implementation.
- *
- * View that can be used with the pagination module
- * from the Twitter Bootstrap CSS Toolkit
- * https://getbootstrap.com/docs/4.5/components/pagination/
- *
- */
-#}
 {% if pageCount > 1 %}
     <nav>
         {% set classAlign = (align is not defined) ? '' : align == 'center' ? ' justify-content-center' : (align == 'right' ? ' justify-content-end' : '') %}
         {% set classSize = (size is not defined) ? '' : size == 'large' ? ' pagination-lg' : (size == 'small' ? ' pagination-sm' : '') %}
         <ul class="pagination{{ classAlign }}{{ classSize }}">
 
+
             {% if previous is defined %}
                 <li class="page-item">
-                    <a class="page-link" rel="prev"
-                       href="{{ path(route, knp_pagination_query(query, previous, options)) }}">&laquo;&nbsp;{{ 'label_previous'|trans({}, 'KnpPaginatorBundle') }}</a>
-                </li>
-            {% else %}
-                <li class="page-item disabled">
-                    <span class="page-link">&laquo;&nbsp;{{ 'label_previous'|trans({}, 'KnpPaginatorBundle') }}</span>
+                    <a class="page-link bg-emerald-500 link-light border-0 shadow-none" rel="prev"
+                       href="{{ path(route, knp_pagination_query(query, previous, options)) }}"><i class="fa
+                       fa-angle-left"></i>
+                        &nbsp;{{ 'label_previous'|trans({}, 'KnpPaginatorBundle') }}</a>
                 </li>
             {% endif %}
 
             {% if startPage > 1 %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ path(route, knp_pagination_query(query, 1, options)) }}">1</a>
+                    <a class="page-link link-emerald-500 border-0 shadow-none" href="{{ path(route, knp_pagination_query
+                        (query, 1,
+                        options)) }}">1</a>
                 </li>
                 {% if startPage == 3 %}
                     <li class="page-item">
-                        <a class="page-link" href="{{ path(route, knp_pagination_query(query, 2, options)) }}">2</a>
+                        <a class="page-link link-emerald-500 border-0 shadow-none"
+                           href="{{ path(route, knp_pagination_query(query, 2, options)) }}">2</a>
                     </li>
                 {% elseif startPage != 2 %}
-                    <li class="page-item disabled">
-                        <span class="page-link">&hellip;</span>
+                    <li class="page-item disabled border-0 shadow-none">
+                        <span class="page-link link-emerald-500 border-0 shadow-none">&hellip;</span>
                     </li>
                 {% endif %}
             {% endif %}
@@ -44,12 +35,12 @@
             {% for page in pagesInRange %}
                 {% if page != current %}
                     <li class="page-item">
-                        <a class="page-link"
+                        <a class="page-link link-emerald-500 border-0 shadow-none"
                            href="{{ path(route, knp_pagination_query(query, page, options)) }}">{{ page }}</a>
                     </li>
                 {% else %}
                     <li class="page-item active">
-                        <span class="page-link">{{ page }}</span>
+                        <span class="page-link bg-emerald-500 link-light border-0 shadow-none">{{ page }}</span>
                     </li>
                 {% endif %}
 
@@ -59,30 +50,26 @@
                 {% if pageCount > (endPage + 1) %}
                     {% if pageCount > (endPage + 2) %}
                         <li class="page-item disabled">
-                            <span class="page-link">&hellip;</span>
+                            <span class="page-link link-emerald-500 border-0 shadow-none">&hellip;</span>
                         </li>
                     {% else %}
                         <li class="page-item">
-                            <a class="page-link"
+                            <a class="page-link link-emerald-500 border-0 shadow-none"
                                href="{{ path(route, knp_pagination_query(query, pageCount - 1, options)) }}">{{ pageCount - 1 }}</a>
                         </li>
                     {% endif %}
                 {% endif %}
                 <li class="page-item">
-                    <a class="page-link"
+                    <a class="page-link link-emerald-500 border-0 shadow-none"
                        href="{{ path(route, knp_pagination_query(query, pageCount, options)) }}">{{ pageCount }}</a>
                 </li>
             {% endif %}
 
             {% if next is defined %}
                 <li class="page-item">
-                    <a class="page-link" rel="next"
+                    <a class="page-link bg-emerald-500 link-light border-0 shadow-none" rel="next"
                        href="{{ path(route, knp_pagination_query(query, next, options)) }}">{{ 'label_next'|trans({}, 'KnpPaginatorBundle') }}
-                        &nbsp;&raquo;</a>
-                </li>
-            {% else %}
-                <li class="page-item disabled">
-                    <span class="page-link">{{ 'label_next'|trans({}, 'KnpPaginatorBundle') }}&nbsp;&raquo;</span>
+                        &nbsp;<i class="fa fa-angle-right"></i></a>
                 </li>
             {% endif %}
         </ul>
