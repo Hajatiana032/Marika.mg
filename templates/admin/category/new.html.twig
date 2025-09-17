@@ -1,0 +1,15 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block admin_title %}Nouvelle catégorie{% endblock %}
+
+{% set display_search_form = false %}
+
+{% block main %}
+    <div class="container-fluid py-5">
+        <h1>Nouvelle catégorie</h1>
+        {{ form_start(form) }}
+        {% include 'admin/category/_form.html.twig' %}
+        <button class="btn btn-blue-600 mt-3"><i class="fa fa-save"></i>&nbsp;Enregistrer</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

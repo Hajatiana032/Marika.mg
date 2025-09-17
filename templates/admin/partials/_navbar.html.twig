@@ -1,5 +1,5 @@
 <nav class="navbar bg-white">
-    {% block form %}
+    {% if display_search_form is not defined or display_search_form %}
         <form action="" method="get">
             <div class="input-group">
                 <input type="search" name="search" class="form-control" placeholder="Rechercher..."
@@ -7,6 +7,6 @@
                 <button type="submit" class="btn btn-blue-600 input-group-text"><i class="fa fa-search"></i></button>
             </div>
         </form>
-    {% endblock %}
-    <div>Avatar</div>
+    {% endif %}
+    <div class="ms-auto">Avatar</div>
 </nav>

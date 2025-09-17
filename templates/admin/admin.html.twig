@@ -12,10 +12,12 @@
             <div class="col-xl-2 bg-blue-600 position-fixed min-vh-100">
                 {% include 'admin/partials/_sidebar.html.twig' %}
             </div>
-            <div class="col-xl-10 ms-auto sticky-top">
-                {% include 'admin/partials/_navbar.html.twig' %}
-            </div>
             <div class="col-xl-10 ms-auto">
+                <div class="sticky-top">
+                    {% block admin_navbar %}
+                        {% include 'admin/partials/_navbar.html.twig' %}
+                    {% endblock %}
+                </div>
                 <div class="container-fluid">
                     {% block main %}
                     {% endblock %}

@@ -25,9 +25,10 @@ final class DashboardController extends AbstractController
     public function index(): Response
     {
         return $this->render('admin/dashboard/index.html.twig', [
+            'current_menu' => 'admin_dashboard',
             'chart_category' => $this->chartCategory(),
             'chart_brand' => $this->chartBrand(),
-            'chart' => $this->chartUser(),
+            'chart_user' => $this->chartUser(),
         ]);
     }
 
