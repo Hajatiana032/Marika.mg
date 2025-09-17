@@ -24,13 +24,45 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
-        if (!$user instanceof User) {
+        if ( ! $user instanceof User) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
         $user->setPassword($newHashedPassword);
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
+    }
+
+    public function countUsersByMonth2025(): array
+    {
+        // Récupérer tous les utilisateurs inscrits en 2025
+        $users = $this->createQueryBuilder('u')
+            ->andWhere('u.createdAt BETWEEN :start AND :end')
+            ->setParameter('start', new \DateTimeImmutable('2025-01-01 00:00:00'))
+            ->setParameter('end', new \DateTimeImmutable('2025-12-31 23:59:59'))
+            ->getQuery()
+            ->getResult(); // On récupère des objets User
+
+        // Initialiser tous les mois à 0
+        $counts = [];
+        for ($m = 1; $m <= 12; $m++) {
+            $month = sprintf('2025-%02d', $m);
+            $counts[$month] = 0;
+        }
+
+        // Compter les utilisateurs par mois
+        foreach ($users as $user) {
+            $month = $user->getCreatedAt()->format('Y-m');
+            $counts[$month]++;
+        }
+
+        // Transformer en tableau pour le chart
+        $result = [];
+        foreach ($counts as $month => $count) {
+            $result[] = ['month' => $month, 'count' => $count];
+        }
+
+        return $result;
     }
 
 //    /**

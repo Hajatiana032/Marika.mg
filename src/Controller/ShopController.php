@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\FilterFormType;
+use App\Model\SearchData;
 use App\Repository\ProductRepository;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,28 +19,18 @@ final class ShopController extends AbstractController
     }
 
     #[Route('/boutique', name: 'app_shop')]
-    public function index(PaginatorInterface $paginator, Request $request): Response
+    public function index(Request $request): Response
     {
-        $products = $paginator->paginate(
-            $this->productRepository->findBy([], ['createdAt' => 'DESC']),
-            $request->query->getInt('page', 1),
-            21
-        );
+        $data = new SearchData();
+        $form = $this->createForm(FilterFormType::class, $data);
+        $form->handleRequest($request);
 
-        $form = $this->createForm(FilterFormType::class);
-
-        if ( ! empty($request->query->all())) {
-            $products = $paginator->paginate(
-                $this->productRepository->searchProduct($request->query->all()),
-                $request->query->getInt('page', 1),
-                21
-            );
-        }
+        $products = $this->productRepository->searchProduct($data);
 
         return $this->render('shop/index.html.twig', [
             'current_menu' => 'shop',
             'products' => $products,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 

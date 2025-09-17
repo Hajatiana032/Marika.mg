@@ -1,7 +1,0 @@
-{{ form_start(form,{action:path('app_shop'), method:'get'}) }}
-     {% for category in form.c %}
-         {{ form_widget(category, {attr: {'onchange': 'this.form.requestSubmit()', 'checked':category.vars.value == app
-         .request.query.get('c')? true : false
-         }}) }}
-     {% endfor %}
-{{ form_end(form) }}

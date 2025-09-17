@@ -5,41 +5,52 @@
 {% block body %}
     <div class="container">
         <h1 class="display-5">Nos produits</h1>
+        {% if app.request.query.get('c') is not empty %}
+            <h5>
+                Catégorie: <span class="position-relative badge bg-emerald-500 rounded-pill">
+                    {{ app.request.query.get('c')|capitalize }}&nbsp;
+                    <a href="{{ path('app_shop', app.request.query.all|merge({c: null})) }}"
+                       class="position-absolute top-0 start-100 translate-middle p-1 bg-emerald-500 border
+                           border-light rounded-circle">
+                        <i class="fa fa-close text-light"></i>
+                    </a>
+                </span>
+            </h5>
+        {% endif %}
+        {% if app.request.query.all('b') is not empty %}
+            <h5 class="mt-4">
+                Marques:
+                {% for brand in app.request.query.all('b') %}
+                    <span
+                        class="position-relative badge bg-emerald-500 rounded-pill {% if loop.index0 %}ms-3{% endif %}">
+                        {{ brand|capitalize }}&nbsp;
+                        <a href="{{ path('app_shop', app.request.query.all|merge({b: app.request.query.all('b')|default
+                            ([])|filter(v => v != brand)})) }}"
+                           class="position-absolute top-0 start-100 translate-middle p-1 bg-emerald-500 border
+                           border-light rounded-circle"><i
+                                class="fa fa-close text-white"
+                            ></i></a>
+                    </span>
+                {% endfor %}
+            </h5>
+        {% endif %}
+        <div class="mb-2">
+            {{ include('shop/_filter.html.twig') }}
+        </div>
+        {{ include('partials/_flash_messages.html.twig') }}
         <div class="row gy-2">
-            {% if app.request.query.get('q') %}
-                <div class="d-flex">
-                    <h4>Mots-clés: {{ app.request.query.get('q')|replace({' ':'+'}) }}</h4>
-                    <a href="{{ path('app_shop') }}" class="link-emerald-500 ms-1"><i
-                            class="fa fa-close"></i></a>
+            {% for product in products %}
+                <div class="col-md-6 col-lg-3">
+                    {{ include('partials/_product_card.html.twig', {product: product}) }}
                 </div>
-            {% endif %}
-            {% if app.request.query.get('c') %}
-                <div class="d-flex">
-                    <h4>Catégories: {{ app.request.query.get('c')|replace({'-':' '})|capitalize }}</h4>
-                    <a href="{{ path('app_shop') }}" class="link-emerald-500 ms-1"><i
-                            class="fa fa-close"></i></a>
+            {% else %}
+                <div class="alert alert-danger text-danger text-center fw-bold">
+                    Aucun résultat
                 </div>
-            {% endif %}
-            <div class="col-lg-12 col-xl-3">
-                {{ include('shop/_filter_form.html.twig', {form: form}) }}
-            </div>
-            <div class="col-lg-12 col-xl-9">
-                {{ include('partials/_flash_messages.html.twig') }}
-                <div class="row gy-2">
-                    {% for product in products %}
-                        <div class="col-lg-4">
-                            {{ include('partials/_product_card.html.twig', {product: product}) }}
-                        </div>
-                    {% else %}
-                        <div class="alert alert-danger text-danger text-center fw-bold">
-                            Aucun résultat
-                        </div>
-                    {% endfor %}
-                    <div class="d-flex">
-                        <div class="ms-auto">
-                            {{ knp_pagination_render(products) }}
-                        </div>
-                    </div>
+            {% endfor %}
+            <div class="d-flex">
+                <div class="ms-auto">
+                    {{ knp_pagination_render(products) }}
                 </div>
             </div>
         </div>

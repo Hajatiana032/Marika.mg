@@ -10,6 +10,8 @@
                     {{ include('partials/_flash_messages.html.twig') }}
                     <div class="col-xl-6">
                         <h4>{{ product.title }}</h4>
+                        <h4>Marque: <a href="{{ path('app_shop', {b: [product.brand.slug]}) }}"><span
+                                    class="badge bg-emerald-500">{{ product.brand.name }}</span></a></h4>
                         <img src="{{ asset('img/upload/product_thumbnail/' ~ product.thumbnail) }}"
                              alt="{{ product.slug }}"
                              class="img-fluid" width="500" height="500">

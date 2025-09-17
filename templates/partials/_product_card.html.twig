@@ -5,7 +5,9 @@
     </div>
     <div class="card-body">
         <h5 class="card-title text-truncate">{{ product.title }}</h5>
-        <span class="badge bg-blue-600">{{ product.brand.name }}</span>
+        <a href="{{ path('app_shop', {b: [product.brand.slug]}) }}">
+            <span class="badge bg-blue-600">{{ product.brand.name }}</span>
+        </a>
         <p class="lead text-truncate">{{ product.description }}</p>
         <div class="d-flex">
             <p class="text-blue-600 fw-bold my-auto">{{ product.price|format_currency('MGA',{},'fr_MG') }}</p>

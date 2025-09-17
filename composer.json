@@ -41,6 +41,7 @@
         "symfony/translation": "7.3.*",
         "symfony/twig-bundle": "7.3.*",
         "symfony/ux-autocomplete": "^2.29",
+        "symfony/ux-chartjs": "^2.30",
         "symfony/ux-live-component": "^2.29",
         "symfony/ux-turbo": "^2.27",
         "symfony/ux-typed": "^2.27",

@@ -14,10 +14,14 @@
     {% endblock %}
 </head>
 <body class="d-flex flex-column min-vh-100">
-{% include 'partials/_navbar.html.twig' %}
-<main class=" flex-grow-1">
+{% block navbar %}
+    {% include 'partials/_navbar.html.twig' %}
+{% endblock %}
+<main class="flex-grow-1">
     {% block body %}{% endblock %}
 </main>
-{% include 'partials/_footer.html.twig' %}
+{% block footer %}
+    {% include 'partials/_footer.html.twig' %}
+{% endblock %}
 </body>
 </html>

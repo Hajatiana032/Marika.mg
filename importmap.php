@@ -91,4 +91,7 @@ return [
     '@swup/debug-plugin' => [
         'version' => '3.0.0',
     ],
+    'chart.js' => [
+        'version' => '3.9.1',
+    ],
 ];

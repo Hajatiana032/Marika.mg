@@ -297,6 +297,9 @@
             "./config/routes/ux_autocomplete.yaml"
         ]
     },
+    "symfony/ux-chartjs": {
+        "version": "v2.30.0"
+    },
     "symfony/ux-live-component": {
         "version": "2.29",
         "recipe": {

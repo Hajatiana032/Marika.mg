@@ -15,13 +15,13 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 :root {
     --blue-600: #1C64F2;
     --emerald-500: #00BC7DFF;
-    --bs-success: red;
 }
 
 @import "../../vendor/twbs/bootstrap/scss/bootstrap";
 @import "navbar";
 @import "card_product";
 @import "form";
+@import "accordion";
 
 body {
     font-family: Inter, sans-serif;
@@ -29,6 +29,10 @@ body {
     margin: 0;
     padding: 0;
     color: rgba(0, 0, 0, 0.65)
+}
+
+.text-body {
+    color: rgba(0, 0, 0, 0.65) !important;
 }
 
 .progress-bar {
@@ -80,4 +84,9 @@ body {
 
 .title-card-category {
     background: linear-gradient(to top right, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.71), rgba(0, 0, 0, 0.83));
+}
+
+.card-filter {
+    max-height: 250px;
+    overflow-y: scroll;
 }

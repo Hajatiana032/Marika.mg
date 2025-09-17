@@ -1,0 +1,18 @@
+{{ form_start(form) }}
+<div class="d-inline-flex gap-3">
+    <div>
+        <button class="btn btn-emerald-500" type="button" data-bs-toggle="modal"
+                data-bs-target="#modalCategories" aria-expanded="false"
+                aria-controls="modalCategories">Catégories
+        </button>
+        {{ include('shop/_modal_filter.html.twig', {id: 'modalCategories', inputs: form.c}) }}
+    </div>
+    <div>
+        <button class="btn btn-emerald-500" type="button" data-bs-toggle="modal"
+                data-bs-target="#modalBrands" aria-expanded="false"
+                aria-controls="modalBrands">Marques
+        </button>
+        {{ include('shop/_modal_filter.html.twig', {id: 'modalBrands', inputs: form.b}) }}
+    </div>
+</div>
+{{ form_end(form) }}

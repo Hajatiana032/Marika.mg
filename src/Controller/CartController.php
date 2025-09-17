@@ -60,7 +60,7 @@ final class CartController extends AbstractController
             $this->update($request, $cart, $product);
         }
 
-        return $this->redirectToRoute('app_cart');
+        return $this->redirect($request->headers->get('referer'));
     }
 
     public function update($request, array $cart, Product $product): void
@@ -72,7 +72,7 @@ final class CartController extends AbstractController
                 'message' => 'La quantité <strong>'.$product->getTitle().'</strong> de votre panier a été mis à jour.',
             ]
         );
-        $request->getSession()->set('cart', $cart);
+        $request->getSession()->set('cart', $cart, $product);
     }
 
     #[Route('/cart/subtract/{id}', 'app_cart_subtract')]
@@ -86,7 +86,7 @@ final class CartController extends AbstractController
         } else {
             if ($cart[$id] > 1) {
                 $cart[$id]--;
-                $this->update($request, $cart);
+                $this->update($request, $cart, $product);
             } else {
                 unset($cart[$id]);
                 $this->addFlash(
