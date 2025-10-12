@@ -11,6 +11,7 @@
         "doctrine/doctrine-bundle": "^2.15",
         "doctrine/doctrine-migrations-bundle": "^3.4",
         "doctrine/orm": "^3.5",
+        "easycorp/easyadmin-bundle": "^4.25",
         "gedmo/doctrine-extensions": "^3.20",
         "knplabs/knp-paginator-bundle": "^6.9",
         "phpdocumentor/reflection-docblock": "^5.6",
@@ -48,10 +49,12 @@
         "symfony/validator": "7.3.*",
         "symfony/web-link": "7.3.*",
         "symfony/yaml": "7.3.*",
+        "symfonycasts/verify-email-bundle": "^1.17",
         "twbs/bootstrap": "^5.3",
         "twig/extra-bundle": "^3.21",
         "twig/intl-extra": "^3.21",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "vich/uploader-bundle": "^2.8"
     },
     "config": {
         "allow-plugins": {

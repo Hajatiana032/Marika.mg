@@ -37,22 +37,35 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         // Récupérer tous les utilisateurs inscrits en 2025
         $users = $this->createQueryBuilder('u')
+            ->select('u', 't')
+            ->join('u.testimonial', 't')
             ->andWhere('u.createdAt BETWEEN :start AND :end')
             ->setParameter('start', new \DateTimeImmutable('2025-01-01 00:00:00'))
             ->setParameter('end', new \DateTimeImmutable('2025-12-31 23:59:59'))
             ->getQuery()
-            ->getResult(); // On récupère des objets User
+            ->getResult();
 
-        // Initialiser tous les mois à 0
+        // Formatter pour obtenir les mois en français abrégé + année
+        $formatter = new \IntlDateFormatter(
+            'fr_FR',
+            \IntlDateFormatter::NONE,
+            \IntlDateFormatter::NONE,
+            'Europe/Paris',
+            \IntlDateFormatter::GREGORIAN,
+            'MMM-yyyy'
+        );
+
+        // Initialiser tous les mois de 2025 à 0
         $counts = [];
         for ($m = 1; $m <= 12; $m++) {
-            $month = sprintf('2025-%02d', $m);
+            $date = new \DateTimeImmutable("2025-$m-01");
+            $month = rtrim($formatter->format($date), '.'); // retirer le point éventuel
             $counts[$month] = 0;
         }
 
         // Compter les utilisateurs par mois
         foreach ($users as $user) {
-            $month = $user->getCreatedAt()->format('Y-m');
+            $month = rtrim($formatter->format($user->getCreatedAt()), '.');
             $counts[$month]++;
         }
 
@@ -64,6 +77,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         return $result;
     }
+
 
 //    /**
 //     * @return User[] Returns an array of User objects

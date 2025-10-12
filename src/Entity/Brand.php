@@ -37,18 +37,6 @@ class Brand
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -87,6 +75,23 @@ class Brand
                 $product->setBrand(null);
             }
         }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }

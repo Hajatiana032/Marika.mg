@@ -1,19 +1,26 @@
 <div class="card card-product border-emerald-500 border-2 m-auto">
     <div class="card-header card-header-product border-0 bg-transparent">
-        <img src="{{ asset('img/upload/product_thumbnail/' ~ product.thumbnail) }}" alt=""
-             class="w-100 h-100 object-fit-contain">
+        {#
+        <pre>
+            {{ dump((product.images|last).name) }}
+        </pre> #}
+        {# <img src="{{ asset('img/uploads/products/' ~ (product.images|last)?.name) }}" alt=""
+            class="w-100 h-100 object-fit-contain"> #}
+        {# {% if product.images is not empty %} #}
+        <img src="{{ asset('img/uploads/products/' ~ (product.images|last).name) }}" alt="Dernière image du produit"
+            class="img-fluid">
+        {# {% endif %} #}
     </div>
     <div class="card-body">
         <h5 class="card-title text-truncate">{{ product.title }}</h5>
         <a href="{{ path('app_shop', {b: [product.brand.slug]}) }}">
             <span class="badge bg-blue-600">{{ product.brand.name }}</span>
         </a>
-        <p class="lead text-truncate">{{ product.description }}</p>
+        <p class="lead text-truncate">{{ product.description|striptags }}</p>
         <div class="d-flex">
             <p class="text-blue-600 fw-bold my-auto">{{ product.price|format_currency('MGA',{},'fr_MG') }}</p>
             <a href="{{ path('app_shop_show', {slug: product.slug}) }}" class="btn btn-emerald-500 mb-2 btn-card-detail
-            ms-auto"><i
-                    class="fa
+            ms-auto"><i class="fa
                         fa-info fa-2x"></i></a>
         </div>
     </div>

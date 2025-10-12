@@ -28,8 +28,8 @@ class ProductRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->select('p', 'b', 'c')
-            ->leftJoin('p.category', 'c')
-            ->leftJoin('p.brand', 'b')
+            ->join('p.category', 'c')
+            ->join('p.brand', 'b')
             ->orderBy('p.createdAt', 'DESC');
         if ( ! empty($search->c)) {
             $qb->andWhere('c = :cat')

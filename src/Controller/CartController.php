@@ -48,7 +48,9 @@ final class CartController extends AbstractController
         if (empty($cart[$id])) {
             $cart[$id] = 1;
             $request->getSession()->set('cart', $cart);
-            $this->addFlash('success', [
+            $this->addFlash(
+                'success',
+                [
                     'color' => 'light',
                     'message' => "<strong>{$product->getTitle()}</strong> a été ajouté dans votre panier.",
                 ]
@@ -69,7 +71,7 @@ final class CartController extends AbstractController
             'warning',
             [
                 'color' => 'dark',
-                'message' => 'La quantité <strong>'.$product->getTitle().'</strong> de votre panier a été mis à jour.',
+                'message' => 'La quantité <strong>' . $product->getTitle() . '</strong> de votre panier a été mis à jour.',
             ]
         );
         $request->getSession()->set('cart', $cart, $product);
@@ -93,7 +95,7 @@ final class CartController extends AbstractController
                     'danger',
                     [
                         'color' => 'white',
-                        'message' => '<strong>'.$product->getTitle().'</strong> a été retiré de votre panier.',
+                        'message' => '<strong>' . $product->getTitle() . '</strong> a été retiré de votre panier.',
                     ]
                 );
             }
@@ -117,7 +119,7 @@ final class CartController extends AbstractController
 
         $this->addFlash('danger', [
             'color' => 'white',
-            'message' => '<strong>'.$product->getTitle().'</strong> a été retiré de votre panier.',
+            'message' => '<strong>' . $product->getTitle() . '</strong> a été retiré de votre panier.',
         ]);
 
         return $this->redirectToRoute('app_cart');

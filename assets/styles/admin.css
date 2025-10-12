@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+:root {
+    --blue-600: #1c64f2;
+    --emerald-500: #00bc7dff;
+    --text-primary-color: var(--blue-600);
+    --sidebar-bg: white;
+    --sidebar-logo-color: var(--blue-600);
+    --sidebar-menu-icon-color: var(--blue-600);
+    --sidebar-menu-color: var(--blue-600);
+    --sidebar-menu-active-item-bg: rgba(0, 0, 0, 0.852);
+    --sidebar-menu-active-item-color: var(--emerald-500);
+    --sidebar-menu-compact-hover-box-shadow: 0 0 0.25rem 1px var(--emerald-500);
+    --button-primary-bg: var(--blue-600);
+    --button-warning-bg: rgba(255, 193, 7, 1);
+    --button-warning-color: black;
+    --pagination-hover-border-color: var(--blue-600);
+    --pagination-active-bg: var(--blue-600);
+    --form-switch-border-color: var(--blue-600);
+    --form-switch-checked-bg: var(--blue-600);
+    --form-type-check-input-box-shadow: none;
+    --form-type-check-input-border-color: var(--blue-600);
+    --form-type-check-input-checked-bg: var(--blue-600);
+    --table-cell-color: rgba(0, 0, 0, 0.65);
+    --table-thead-marker-color: var(--blue-600);
+    --content-search-reset-button-bg: var(--color-danger);
+    --content-search-reset-button-color: white;
+    --content-search-reset-button-hover-bg: var(--color-danger);
+    --user-avatar-icon-bg: var(--blue-600);
+    --user-avatar-icon-color: white;
+    --user-name-color: white;
+    --user-menu-impersonated-link-color: white;
+    --dropdown-toggle-bg: transparent;
+    --dropdown-border-color: transparent;
+    --datagrid-noresults-placeholder-bg: #ff000014;
+}
+
+body {
+    font-family: Inter, sans-serif;
+    font-size: 15px;
+    margin: 0;
+    padding: 0;
+}

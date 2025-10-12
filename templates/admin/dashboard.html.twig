@@ -1,0 +1,14 @@
+{% extends '@EasyAdmin/layout.html.twig' %}
+
+{% block page_title %}
+Tableau de bord
+{% endblock %}
+
+{% block main %}
+<h1 class="">Tableau de bord</h1>
+<div class="row">
+    <div class="col-12">
+        {{ render_chart(chartCategory) }}
+    </div>
+</div>
+{% endblock %}

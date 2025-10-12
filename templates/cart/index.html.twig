@@ -3,65 +3,60 @@
 {% block title %}{{ parent() }} - Mon panier{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1 class="display-5">Mon panier</h1>
-        {{ include('partials/_flash_messages.html.twig') }}
-        <div class="table-responsive">
-            {% if items %}
-                <table class="table align-middle text-center">
-                    <thead>
-                    <tr>
-                        <th>Photos</th>
-                        <th>Titre</th>
-                        <th>Quantité</th>
-                        <th>Prix</th>
-                        <th>Total</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for item in items %}
-                        <tr>
-                            <td><img src="{{ asset('img/upload/product_thumbnail/' ~ item.product
-                                .thumbnail) }}"
-                                     alt="{{ item.product.slug }}" class="object-fit-contain"
-                                     width="100" height="100">
-                            </td>
-                            <td>{{ item.product.title }}</td>
-                            <td>
-                                <a href="{{ path('app_cart_subtract',{id:item.product.id}) }}"
-                                   class="link-emerald-500"><i class="far
+<div class="container">
+    <h1 class="display-5">Mon panier</h1>
+    {{ include('partials/_flash_messages.html.twig') }}
+    <div class="table-responsive">
+        {% if items %}
+        <table class="table align-middle text-center">
+            <thead>
+                <tr>
+                    <th>Photos</th>
+                    <th>Titre</th>
+                    <th>Quantité</th>
+                    <th>Prix</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td><img src="{{ asset('img/uploads/products/' ~ item.product.images|last.name) }}"
+                            alt="{{ item.product.slug }}" class="object-fit-contain" width="100" height="100">
+                    </td>
+                    <td>{{ item.product.title }}</td>
+                    <td>
+                        <a href="{{ path('app_cart_subtract',{id:item.product.id}) }}" class="link-emerald-500"><i
+                                class="far
                                                                 fa-minus-square"></i></a>
-                                {{ item.quantity }}
-                                <a href="{{ path('app_cart_add', {id: item.product.id}) }}"
-                                   class="link-emerald-500"><i
-                                        class="far
+                        {{ item.quantity }}
+                        <a href="{{ path('app_cart_add', {id: item.product.id}) }}" class="link-emerald-500"><i class="far
                                                                 fa-plus-square"></i></a>
-                            </td>
-                            <td>{{ item.product.price|format_currency('MGA', {}, 'FR_mg') }}</td>
-                            <td>{{ item.total|format_currency('MGA',{},'FR_mg') }}</td>
-                            <td><a href="{{ path('app_cart_delete', {id: item.product.id}) }}"
-                                   class="link-danger"><i
-                                        class="fa fa-trash-can-arrow-up"></i></a></td>
-                        </tr>
-                    {% endfor %}
-                    <tr>
-                        <td colspan="5" class="bg-emerald-500 fw-semibold h4">
-                            {{ total|format_currency('MGA', {}, 'FR_mg') }}
-                        </td>
-                        <td>
-                            <a href="{{ path('app_cart_remove') }}" class="btn btn-danger"><i class="fa
+                    </td>
+                    <td>{{ item.product.price|format_currency('MGA', {}, 'FR_mg') }}</td>
+                    <td>{{ item.total|format_currency('MGA',{},'FR_mg') }}</td>
+                    <td><a href="{{ path('app_cart_delete', {id: item.product.id}) }}" class="link-danger"><i
+                                class="fa fa-trash-can-arrow-up"></i></a></td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="5" class="bg-emerald-500 fw-semibold h4">
+                        {{ total|format_currency('MGA', {}, 'FR_mg') }}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_cart_remove') }}" class="btn btn-danger"><i class="fa
                             fa-trash-can-arrow-up">&nbsp;</i>Vider le panier
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            {% else %}
-                <div class="alert bg-danger text-light text-center" role="alert">
-                    Votre panier est vide
-                </div>
-            {% endif %}
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        {% else %}
+        <div class="alert bg-danger text-light text-center" role="alert">
+            Votre panier est vide
         </div>
+        {% endif %}
     </div>
+</div>
 {% endblock %}

@@ -34,7 +34,7 @@ class FilterFormType extends AbstractType
                 'multiple' => true,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('b')
-                        ->join('b.product', 'p');
+                        ->join('b.products', 'p');
                 },
             ]);
     }

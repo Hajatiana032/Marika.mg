@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Entity\Trait\DateTimeTrait;
 use App\Repository\ProductRepository;
 use DateMalformedStringException;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -34,18 +36,20 @@ class Product
     private ?int $stock = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
     #[ORM\Column(length: 255)]
     #[Gedmo\Slug(fields: ['title'])]
     private ?string $slug = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $thumbnail = null;
-
-    #[ORM\ManyToOne(inversedBy: 'product')]
+    #[ORM\ManyToOne(inversedBy: 'products')]
     private ?Brand $brand = null;
+
+    /**
+     * @var Collection<int, Image>
+     */
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'product')]
+    private Collection $images;
 
     /**
      * @throws DateMalformedStringException
@@ -54,6 +58,7 @@ class Product
     {
         $this->createdAt = new \DateTimeImmutable('now', new \DateTimeZone('Indian/Antananarivo'));
         $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('Indian/Antananarivo'));
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -133,18 +138,6 @@ class Product
         return $this;
     }
 
-    public function getThumbnail(): ?string
-    {
-        return $this->thumbnail;
-    }
-
-    public function setThumbnail(string $thumbnail): static
-    {
-        $this->thumbnail = $thumbnail;
-
-        return $this;
-    }
-
     public function getBrand(): ?Brand
     {
         return $this->brand;
@@ -153,6 +146,36 @@ class Product
     public function setBrand(?Brand $brand): static
     {
         $this->brand = $brand;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Image>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): static
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): static
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getProduct() === $this) {
+                $image->setProduct(null);
+            }
+        }
 
         return $this;
     }

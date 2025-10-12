@@ -17,14 +17,12 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ProductFixture extends Fixture
 {
-    private string $uploadDir;
+    public const string PRODUCT_IMAGE_REFERENCE = 'product-image-';
 
     public function __construct(
         private readonly HttpClientInterface $client,
         private readonly SluggerInterface $slugger
-    ) {
-        $this->uploadDir = __DIR__.'/../../assets/img/upload/product_thumbnail/';
-    }
+    ) {}
 
     /**
      * @throws TransportExceptionInterface
@@ -38,28 +36,25 @@ class ProductFixture extends Fixture
         $response = $this->client->request('GET', 'https://dummyjson.com/products?limit=0');
         $content = $response->toArray();
 
-        $this->clearDirectory();
-
-        foreach ($content['products'] as $item) {
+        foreach ($content['products'] as $key => $item) {
             /**
              * Get category reference by slug.
              */
             $category = $this->getCategoryReference($item['category']);
-            if ( ! $category) {
+            if (! $category) {
                 continue;
             }
 
-            if ( ! isset($item['brand'])) {
+            if (! isset($item['brand'])) {
                 continue;
             }
             $slug = $this->slugger->slug($item['brand'])->lower();
             $brand = $this->getBrandReference($slug);
 
-            if ( ! $brand) {
+            if (! $brand) {
                 continue;
             }
 
-            $filename = $this->downloadThumbnail($item['thumbnail']);
             $product = new Product();
             $product->setTitle($item['title']);
             $product->setSlug($this->slugger->slug($item['title'])->lower());
@@ -67,27 +62,14 @@ class ProductFixture extends Fixture
             $product->setPrice($item['price']);
             $product->setStock($item['stock']);
             $product->setCategory($category);
-            $product->setThumbnail($filename);
             $product->setBrand($brand);
 
             $manager->persist($product);
+
+            $this->addReference(self::PRODUCT_IMAGE_REFERENCE . $key, $product);
         }
 
         $manager->flush();
-    }
-
-    private function clearDirectory(): void
-    {
-        if (is_dir($this->uploadDir)) {
-            foreach (glob($this->uploadDir.'*') as $file) {
-                if (is_file($file)) {
-                    unlink($file);
-                }
-            }
-        } else {
-            // Si le dossier n’existe pas, on le crée
-            mkdir($this->uploadDir, 0755, true);
-        }
     }
 
     /**
@@ -98,8 +80,8 @@ class ProductFixture extends Fixture
      */
     private function getCategoryReference(string $slug): ?Category
     {
-        $refKey = CategoryFixture::CATEGORY_PRODUCT_REFERENCE.$slug;
-        if ( ! $this->hasReference($refKey, Category::class)) {
+        $refKey = CategoryFixture::CATEGORY_PRODUCT_REFERENCE . $slug;
+        if (! $this->hasReference($refKey, Category::class)) {
             return null;
         }
 
@@ -108,32 +90,11 @@ class ProductFixture extends Fixture
 
     private function getBrandReference(string $slug): ?Brand
     {
-        $refKey = BrandFixture::BRAND_PRODUCT_REFERENCE.$slug;
-        if ( ! $this->hasReference($refKey, Brand::class)) {
+        $refKey = BrandFixture::BRAND_PRODUCT_REFERENCE . $slug;
+        if (! $this->hasReference($refKey, Brand::class)) {
             return null;
         }
 
         return $this->getReference($refKey, Brand::class);
-    }
-
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ClientExceptionInterface
-     */
-    private function downloadThumbnail(
-        ?string $url
-    ): ?string {
-        if ( ! $url) {
-            return null;
-        }
-        $resp = $this->client->request('GET', $url, ['buffer' => false]);
-        $content = $resp->getContent(false);
-        $extension = pathinfo($url, PATHINFO_EXTENSION);
-        $filename = uniqid('prod-').'.'.$extension;
-        file_put_contents($this->uploadDir.$filename, $content);
-
-        return $filename;
     }
 }

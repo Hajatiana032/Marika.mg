@@ -16,6 +16,15 @@ class BrandRepository extends ServiceEntityRepository
         parent::__construct($registry, Brand::class);
     }
 
+    public function stat()
+    {
+        return $this->createQueryBuilder('b')
+            ->select('b', 'p')
+            ->leftJoin('b.products', 'p')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Brand[] Returns an array of Brand objects
 //     */

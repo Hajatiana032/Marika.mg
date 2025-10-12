@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Marika.mg{% endblock %}</title>
-    <link rel="icon"
-          href="{{ asset('img/logo.svg') }}">
-    {% block stylesheets %}
-    {% endblock %}
 
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Marika.mg {% endblock %}</title>
+    <link rel="icon" href="{{ asset('img/logo.svg') }}" />
+    {% block stylesheets %}{% endblock %}
     {% block javascripts %}
-        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% block importmap %}
+    {{ importmap("app")}}
+    {% endblock %}
     {% endblock %}
 </head>
+
 <body class="d-flex flex-column min-vh-100">
-{% block navbar %}
+    {% block navbar %}
     {% include 'partials/_navbar.html.twig' %}
-{% endblock %}
-<main class="flex-grow-1">
-    {% block body %}{% endblock %}
-</main>
-{% block footer %}
+    {% endblock %}
+    <main class="flex-grow-1">{% block body %}{% endblock %}</main>
+    {% block footer %}
     {% include 'partials/_footer.html.twig' %}
-{% endblock %}
+    {% endblock %}
 </body>
+
 </html>

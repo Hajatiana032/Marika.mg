@@ -11,9 +11,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class TestimonialFixture extends Fixture implements DependentFixtureInterface
 {
-    public function __construct(private readonly HttpClientInterface $client)
-    {
-    }
+    public function __construct(private readonly HttpClientInterface $client) {}
 
     public function load(ObjectManager $manager): void
     {
@@ -22,12 +20,15 @@ class TestimonialFixture extends Fixture implements DependentFixtureInterface
 
         foreach ($testimonials['comments'] as $i => $data) {
             $testimonial = new Testimonial();
-            $testimonial->setUser(
-                $this->getReference(
-                    UserFixture::USER_TESTIMONIAL_REFERENCE.$i,
-                    User::class
-                )
-            )
+            $refKey = UserFixture::USER_TESTIMONIAL_REFERENCE . $i;
+
+            if (!$this->hasReference($refKey, User::class)) {
+                continue;
+            }
+
+            $ref = $this->getReference($refKey, User::class);
+
+            $testimonial->setUser($ref)
                 ->setContent($data['body'])
                 ->setIsVerified(mt_rand(0, 1));
 

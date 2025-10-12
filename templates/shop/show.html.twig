@@ -3,27 +3,44 @@
 {% block title %} {{ parent() }} - {{ product.slug }} {% endblock %}
 
 {% block body %}
-    <div class="container mt-4">
-        <div class="card product-detail">
-            <div class="card-body">
-                <div class="row">
-                    {{ include('partials/_flash_messages.html.twig') }}
-                    <div class="col-xl-6">
-                        <h4>{{ product.title }}</h4>
-                        <h4>Marque: <a href="{{ path('app_shop', {b: [product.brand.slug]}) }}"><span
-                                    class="badge bg-emerald-500">{{ product.brand.name }}</span></a></h4>
-                        <img src="{{ asset('img/upload/product_thumbnail/' ~ product.thumbnail) }}"
-                             alt="{{ product.slug }}"
-                             class="img-fluid" width="500" height="500">
+<div class="container mt-4">
+    <div class="card product-detail">
+        <div class="card-body">
+            <div class="row">
+                {{ include('partials/_flash_messages.html.twig') }}
+                <div class="col-xl-6">
+                    <div id="carouselExampleIndicators" class="carousel slide overflow-hidden align-items-center d-flex"
+                        data-bs-ride="carousel" style="height: 250px;">
+                        <div class="carousel-indicators">
+                            {% for image in product.images %}
+                            <button type="button" data-bs-target="#carouselExampleIndicators"
+                                data-bs-slide-to="{{ loop.index0 }}" class="{% if loop.first %}active{%
+                                endif %}  bg-emerald-500" aria-current="true"
+                                aria-label="Slide {{ loop.index }}"></button>
+                            {% endfor %}
+                        </div>
+
+                        <div class="carousel-inner">
+                            {% for image in product.images %}
+                            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                <img src="{{ asset('img/uploads/products/' ~ image.name) }}"
+                                    class="object-fit-contain w-100" height="350" alt="Image {{ loop.index }}">
+                            </div>
+                            {% endfor %}
+                        </div>
                     </div>
-                    <div class="col-xl-6">
-                        <p>{{ product.description }}</p>
-                        <h4 class="fw-semibold">Prix: {{ product.price|format_currency('MGA', {}, 'Fr_mg') }}</h4>
-                        <a href="{{ path('app_cart_add', {id: product.id}) }}" class="btn btn-emerald-500">Ajouter au
-                            panier</a>
-                    </div>
+                    <h4>{{ product.title }}</h4>
+                    <h4>Marque: <a href="{{ path('app_shop', {b: [product.brand.slug]}) }}"><span
+                                class="badge bg-emerald-500">{{ product.brand.name }}</span></a></h4>
+                </div>
+                <div class="col-xl-6">
+                    <p>{{ product.description|raw }}</p>
+                    <h4 class="fw-semibold">Prix: {{ product.price|format_currency('MGA', {}, 'Fr_mg') }}</h4>
+                    <a href="{{ path('app_cart_add', {id: product.id}) }}" class="btn btn-emerald-500">Ajouter au
+                        panier</a>
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

@@ -3,9 +3,12 @@
 {% block title %}{{ parent() }} - Acceuil{% endblock %}
 
 {% block body %}
-    {% include 'home/_hero.html.twig' %}
-    {% include 'home/_latest.html.twig' %}
-    {% include 'home/_category.html.twig' %}
-    {% include 'home/_service.html.twig' %}
-    {% include 'home/_testimonials.html.twig' %}
+<div class="conatiner">
+    {% include "partials/_flash_messages.html.twig" %}
+</div>
+{% include 'home/_hero.html.twig' %}
+{% include 'home/_latest.html.twig' %}
+{% include 'home/_category.html.twig' %}
+{% include 'home/_service.html.twig' %}
+{% include 'home/_testimonials.html.twig' %}
 {% endblock %}

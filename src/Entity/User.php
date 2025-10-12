@@ -6,11 +6,16 @@ use App\Entity\Trait\DateTimeTrait;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use DateTimeTrait;
@@ -54,10 +59,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $zipCode = null;
 
     #[ORM\Column(length: 15)]
-    private ?string $City = null;
+    private ?string $city = null;
 
     #[ORM\Column]
-    private ?bool $isVerified = null;
+    private ?bool $isVerified = false;
 
     #[ORM\Column(length: 255)]
     #[Gedmo\Slug(fields: ['username'])]
@@ -68,7 +73,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $avatar = null;
-    
+
+    #[Vich\UploadableField(mapping: 'avatar', fileNameProperty: 'avatar')]
+    private ?File $avatarFile = null;
+
     public function __construct()
     {
         $this->createdAt = new  \DateTimeImmutable('now', new \DateTimeZone('Indian/Antananarivo'));
@@ -145,7 +153,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __serialize(): array
     {
         $data = (array)$this;
-        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
+        $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
 
         return $data;
     }
@@ -230,12 +238,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getCity(): ?string
     {
-        return $this->City;
+        return $this->city;
     }
 
-    public function setCity(string $City): static
+    public function setCity(string $city): static
     {
-        $this->City = $City;
+        $this->city = $city;
 
         return $this;
     }
@@ -296,5 +304,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->avatar = $avatar;
 
         return $this;
+    }
+
+    public function getAvatarFile(): ?File
+    {
+        return $this->avatarFile;
+    }
+
+    public function setAvatarFile(?File $avatarFile = null)
+    {
+        $this->avatarFile = $avatarFile;
+
+        if (null !== $avatarFile) {
+            $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('Indian/Antananarivo'));
+        }
+    }
+
+    public function __toString()
+    {
+        return $this->username;
     }
 }
