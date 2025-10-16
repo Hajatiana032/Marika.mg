@@ -5,9 +5,16 @@
 {% block body %}
     <div class="container">
         <h1 class="display-5">Nos produits</h1>
+        {% if app.request.query.get('q') is not empty %}
+            <h5>Mot clés: <span class="position-relative badge bg-emerald-500 rounded-pill">{{ app.request.query.get
+                        ('q')|capitalize|replace({' ': ' + '}) }}<a
+                        href="{{ path('app_shop', app.request.query.all|merge({q: ''})) }}" class="position-absolute
+                                top-0 start-100 translate-middle p-1 bg-emerald-500 border border-light rounded-circle
+         "><i class="fa fa-close text-light"></i></a></span></h5>
+        {% endif %}
         {% if app.request.query.get('c') is not empty %}
             <h5>
-                Catégorie: <span class="position-relative badge bg-emerald-500 rounded-pill">
+                Catégorie: <span class="position-relative badge bg-emerald-500 rounded-pill mt-4">
                     {{ app.request.query.get('c')|capitalize }}&nbsp;
                     <a href="{{ path('app_shop', app.request.query.all|merge({c: null})) }}"
                        class="position-absolute top-0 start-100 translate-middle p-1 bg-emerald-500 border
@@ -44,7 +51,7 @@
                     {{ include('partials/_product_card.html.twig', {product: product}) }}
                 </div>
             {% else %}
-                <div class="alert alert-danger text-danger text-center fw-bold">
+                <div class="alert bg-danger text-light text-center fw-bold">
                     Aucun résultat
                 </div>
             {% endfor %}

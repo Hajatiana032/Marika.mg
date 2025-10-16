@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\Table(name: 'product')]
@@ -39,7 +38,6 @@ class Product
     private ?Category $category = null;
 
     #[ORM\Column(length: 255)]
-    #[Gedmo\Slug(fields: ['title'])]
     private ?string $slug = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
@@ -48,7 +46,7 @@ class Product
     /**
      * @var Collection<int, Image>
      */
-    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'product')]
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'product', cascade: ['persist'], orphanRemoval: true)]
     private Collection $images;
 
     /**

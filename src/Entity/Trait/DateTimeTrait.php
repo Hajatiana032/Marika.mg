@@ -3,16 +3,13 @@
 namespace App\Entity\Trait;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 trait DateTimeTrait
 {
     #[ORM\Column]
-    #[Gedmo\Timestampable(on: 'create')]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    #[Gedmo\Timestampable(on: 'update')]
     private ?\DateTimeImmutable $updatedAt = null;
 
     public function getCreatedAt(): ?\DateTimeImmutable
@@ -40,7 +37,5 @@ trait DateTimeTrait
     }
 
     #[ORM\PreUpdate]
-    public function setUpdatedAtValue()
-    {
-    }
+    public function setUpdatedAtValue() {}
 }

@@ -7,6 +7,11 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class UserFixture extends Fixture
@@ -19,9 +24,16 @@ class UserFixture extends Fixture
         private readonly UserPasswordHasherInterface $passwordHasher,
         private readonly SluggerInterface $slugger,
     ) {
-        $this->uploadDir = __DIR__ . '/../../assets/img/uploads/avatar/';
+        $this->uploadDir = __DIR__.'/../../public/build/img/uploads/avatar/';
     }
 
+    /**
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     */
     public function load(ObjectManager $manager): void
     {
         $this->clearDirectory();
@@ -33,19 +45,19 @@ class UserFixture extends Fixture
             $avatarUrl = $data['image'];
 
             // Télécharger l'image via HttpClient
-            $response = $this->client->request('GET', $avatarUrl, ['buffer' => false]);
+            $response = $this->client->request('GET', $avatarUrl);
             $imageContent = $response->getContent(false);
 
             // Déterminer l'extension depuis l'URL (ou fallback à 'jpg')
             $extension = pathinfo(parse_url($avatarUrl, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'jpg';
-            $filename = uniqid('user-') . '.' . $extension;
+            $filename = uniqid('user-').'.'.$extension;
 
             // S'assurer que le dossier existe
-            if (! is_dir($this->uploadDir)) {
+            if ( ! is_dir($this->uploadDir)) {
                 mkdir($this->uploadDir, 0755, true);
             }
 
-            file_put_contents($this->uploadDir . $filename, $imageContent);
+            file_put_contents($this->uploadDir.$filename, $imageContent);
 
             $user = new User();
             $user->setFirstName($data['firstName'])
@@ -64,15 +76,15 @@ class UserFixture extends Fixture
 
             $manager->persist($user);
 
-            $this->setReference(self::USER_TESTIMONIAL_REFERENCE . $i, $user);
+            $this->setReference(self::USER_TESTIMONIAL_REFERENCE.$i, $user);
         }
 
         $adminUrl = 'https://m.media-amazon.com/images/S/pv-target-images/16627900db04b76fae3b64266ca161511422059cd24062fb5d900971003a0b70._SX1080_FMjpg_.jpg';
         $adminResponse = $this->client->request('GET', $adminUrl, ['buffer' => false]);
         $adminContent = $adminResponse->getContent(false);
         $adminExtension = pathinfo(parse_url($adminUrl, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'jpg';
-        $adminFilename = uniqid('user-') . '.' . $adminExtension;
-        file_put_contents($this->uploadDir . $adminFilename, $adminContent);
+        $adminFilename = uniqid('user-').'.'.$adminExtension;
+        file_put_contents($this->uploadDir.$adminFilename, $adminContent);
 
         $admin = new User();
         $admin->setFirstName("John")
@@ -85,7 +97,7 @@ class UserFixture extends Fixture
             ->setCity("Antananarivo")
             ->setIsVerified(true)
             ->setRoles(['ROLE_ADMIN', 'ROLE_USER'])
-            ->setSlug($this->slugger->slug($user->getUsername())->lower())
+            ->setSlug($this->slugger->slug($admin->getUsername())->lower())
             ->setPassword($this->passwordHasher->hashPassword($admin, 'password'))
             ->setAvatar($adminFilename);
 
@@ -97,7 +109,7 @@ class UserFixture extends Fixture
     private function clearDirectory(): void
     {
         if (is_dir($this->uploadDir)) {
-            foreach (glob($this->uploadDir . '*') as $file) {
+            foreach (glob($this->uploadDir.'*') as $file) {
                 if (is_file($file)) {
                     unlink($file);
                 }
@@ -105,21 +117,5 @@ class UserFixture extends Fixture
         } else {
             mkdir($this->uploadDir, 0755, true);
         }
-    }
-
-    private function downloadAvatar(
-        ?string $url
-    ): ?string {
-        if (! $url) {
-            return null;
-        }
-
-        $resp = $this->client->request('GET', $url, ['buffer' => false]);
-        $content = $resp->getContent(false);
-        $extension = pathinfo($url, PATHINFO_EXTENSION);
-        $filename = uniqid('user-') . '.' . $extension;
-        file_put_contents($this->uploadDir . $filename, $content);
-
-        return $filename;
     }
 }

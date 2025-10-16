@@ -7,7 +7,7 @@ use App\Entity\Category;
 
 class SearchData
 {
-    public string $q = '';
+    public ?string $q = null;
     public ?Category $c = null;
     /**
      * @var Brand[]

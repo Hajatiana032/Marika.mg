@@ -7,17 +7,30 @@ use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ImageFixture extends Fixture implements DependentFixtureInterface
 {
 
     private string $uploadDir;
-    public function __construct(private HttpClientInterface $client)
+
+    public function __construct(private readonly HttpClientInterface $client)
     {
-        $this->uploadDir = __DIR__ . '/../../assets/img/uploads/products/';
+        $this->uploadDir = __DIR__.'/../../public/build/img/uploads/products/';
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function load(ObjectManager $manager): void
     {
         $response = $this->client->request('GET', 'https://dummyjson.com/products?limit=0');
@@ -28,7 +41,7 @@ class ImageFixture extends Fixture implements DependentFixtureInterface
         foreach ($content['products'] as $key => $item) {
             foreach ($item['images'] as $file) {
                 $product = $this->getProductReference($key);
-                if (! $product) {
+                if ( ! $product) {
                     continue;
                 }
 
@@ -48,7 +61,7 @@ class ImageFixture extends Fixture implements DependentFixtureInterface
     private function clearDirectory(): void
     {
         if (is_dir($this->uploadDir)) {
-            foreach (glob($this->uploadDir . '*') as $file) {
+            foreach (glob($this->uploadDir.'*') as $file) {
                 if (is_file($file)) {
                     unlink($file);
                 }
@@ -57,6 +70,16 @@ class ImageFixture extends Fixture implements DependentFixtureInterface
             // Si le dossier n’existe pas, on le crée
             mkdir($this->uploadDir, 0755, true);
         }
+    }
+
+    private function getProductReference(int $key): ?Product
+    {
+        $refKey = ProductFixture::PRODUCT_IMAGE_REFERENCE.$key;
+        if ( ! $this->hasReference($refKey, Product::class)) {
+            return null;
+        }
+
+        return $this->getReference($refKey, Product::class);
     }
 
     /**
@@ -68,32 +91,22 @@ class ImageFixture extends Fixture implements DependentFixtureInterface
     private function downloadImage(
         ?string $url
     ): ?string {
-        if (! $url) {
+        if ( ! $url) {
             return null;
         }
         $resp = $this->client->request('GET', $url, ['buffer' => false]);
         $content = $resp->getContent(false);
         $extension = pathinfo($url, PATHINFO_EXTENSION);
-        $filename = uniqid('prod-') . '.' . $extension;
-        file_put_contents($this->uploadDir . $filename, $content);
+        $filename = uniqid('prod-').'.'.$extension;
+        file_put_contents($this->uploadDir.$filename, $content);
 
         return $filename;
-    }
-
-    private function getProductReference(int $key): ?Product
-    {
-        $refKey = ProductFixture::PRODUCT_IMAGE_REFERENCE . $key;
-        if (! $this->hasReference($refKey, Product::class)) {
-            return null;
-        }
-
-        return $this->getReference($refKey, Product::class);
     }
 
     public function getDependencies(): array
     {
         return [
-            ProductFixture::class
+            ProductFixture::class,
         ];
     }
 }

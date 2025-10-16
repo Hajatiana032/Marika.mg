@@ -25,7 +25,18 @@ final class ShopController extends AbstractController
         $form = $this->createForm(FilterFormType::class, $data);
         $form->handleRequest($request);
 
-        $products = $this->productRepository->searchProduct($data);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $queryParams = $request->query->all();
+
+            if (isset($queryParams['q']) && $queryParams['q'] === '') {
+                unset($queryParams['q']);
+
+                // Redirection propre sans le paramètre vide
+                return $this->redirectToRoute('app_shop', $queryParams);
+            }
+        }
+
+        $products = $this->productRepository->searchProduct($data, $request->query->get('q'));
 
         return $this->render('shop/index.html.twig', [
             'current_menu' => 'shop',

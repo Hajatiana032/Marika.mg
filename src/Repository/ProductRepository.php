@@ -31,6 +31,10 @@ class ProductRepository extends ServiceEntityRepository
             ->join('p.category', 'c')
             ->join('p.brand', 'b')
             ->orderBy('p.createdAt', 'DESC');
+        if ( ! empty($search->q)) {
+            $qb->andWhere('MATCH_AGAINST(p.title, p.description) AGAINST(:query BOOLEAN) > 0')
+                ->setParameter('query', $search->q);
+        }
         if ( ! empty($search->c)) {
             $qb->andWhere('c = :cat')
                 ->setParameter('cat', $search->c);

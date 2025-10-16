@@ -8,7 +8,7 @@
                     <div class="card-body p-0" style="height: 150px;">
                         {% for product in category.products|slice(0,1) %}
                         <div class="h-100">
-                            <img src="{{ asset('img/uploads/products/'~product.images|last.name) }}"
+                            <img src="{{ vich_uploader_asset(product.images|last, 'imageFile') }}"
                                 alt="{{ category.slug }}" class="w-100 h-100 object-fit-contain
                                                                      card-img-category">
                         </div>

@@ -6,7 +6,6 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
@@ -22,7 +21,6 @@ class Category
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Gedmo\Slug(fields: ['name'])]
     private ?string $slug = null;
 
     /**
@@ -63,7 +61,7 @@ class Category
 
     public function addProduct(Product $product): static
     {
-        if ( ! $this->products->contains($product)) {
+        if (! $this->products->contains($product)) {
             $this->products->add($product);
             $product->setCategory($this);
         }

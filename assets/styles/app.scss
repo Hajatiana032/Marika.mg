@@ -1,28 +1,26 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-@import "../../vendor/twbs/bootstrap/scss/functions";
-@import "../../vendor/twbs/bootstrap/scss/variables";
-@import "./navbar";
 
 // Create your own map
 $custom-colors: (
     "blue-600": #1C64F2,
-    "emerald-500":#00BC7DFF,
+    "emerald-500":#00BC7DFF
 );
 
 // Merge the maps
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
+@import "bootstrap/scss/bootstrap";
+@import "navbar";
+@import "card_product";
+@import "form";
+@import "accordion";
 :root {
     --blue-600: #1C64F2;
     --emerald-500: #00BC7DFF;
 }
 
-
-@import "../../vendor/twbs/bootstrap/scss/bootstrap";
-@import "navbar";
-@import "card_product";
-@import "form";
-@import "accordion";
 
 body {
     font-family: Inter, sans-serif;

@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Entity\Trait\DateTimeTrait;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -65,7 +64,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?bool $isVerified = false;
 
     #[ORM\Column(length: 255)]
-    #[Gedmo\Slug(fields: ['username'])]
     private ?string $slug = null;
 
     #[ORM\OneToOne(mappedBy: 'User', cascade: ['persist', 'remove'])]

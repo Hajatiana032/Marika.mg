@@ -38,9 +38,14 @@
         </div>
         #}
 
-        <button class="btn btn-lg btn-blue-600 mt-3" type="submit">
-            Connexion
-        </button>
+        <div class="text-center">
+            <button class="btn btn-lg btn-blue-600 mt-3 mb-2" type="submit">
+                Connexion
+            </button>
+            <div>
+                <a href="{{ path('app_forgot_password_request') }}" class="link-blue-600">Mot de passe oublié?</a>
+            </div>
+        </div>
     </form>
 </div>
 {% endblock %}

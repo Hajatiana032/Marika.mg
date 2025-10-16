@@ -16,7 +16,7 @@
                     <div class="col-lg-4">
                         <div class="card text-center border-emerald-500 border-2 shadow testimonial-card">
                             <div class="card-header border-0 bg-transparent">
-                                <img src="{{ asset('img/upload/avatar/' ~ testimonial.user.avatar) }}"
+                                <img src="{{ vich_uploader_asset(testimonial.user, 'avatarFile') }}"
                                     alt="{{ testimonial.user.username }}" class="w-100 object-fit-contain" height="100">
                                 <div class="card-title">
                                     {{ testimonial.user.username }}

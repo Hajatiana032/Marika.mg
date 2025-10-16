@@ -50,10 +50,9 @@ class RegistrationFormType extends AbstractType
                     'Antananarivo' => 'Antananarivo'
                 ]
             ])
-            ->add('avatarFile', VichImageType::class, [
+            ->add('avatarFile', FileType::class, [
                 'label' => 'Photo de profil',
                 'required' => false,
-                'allow_delete' => true,
             ])
             ->add('username', TextType::class, [
                 'label' => "Nom d'utilisateur"

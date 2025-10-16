@@ -2,26 +2,27 @@
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>{% block title %}Marika.mg {% endblock %}</title>
-    <link rel="icon" href="{{ asset('img/logo.svg') }}" />
+    <link rel="icon" href="{{ asset('build/img/logo.svg') }}"/>
     {% block stylesheets %}{% endblock %}
+    {{ encore_entry_link_tags('app') }}
     {% block javascripts %}
-    {% block importmap %}
-    {{ importmap("app")}}
-    {% endblock %}
+        {{ encore_entry_script_tags('app') }}
+        {% block importmap %}
+        {% endblock %}
     {% endblock %}
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    {% block navbar %}
+{% block navbar %}
     {% include 'partials/_navbar.html.twig' %}
-    {% endblock %}
-    <main class="flex-grow-1">{% block body %}{% endblock %}</main>
-    {% block footer %}
+{% endblock %}
+<main class="flex-grow-1">{% block body %}{% endblock %}</main>
+{% block footer %}
     {% include 'partials/_footer.html.twig' %}
-    {% endblock %}
+{% endblock %}
 </body>
 
 </html>

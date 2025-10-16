@@ -7,7 +7,7 @@
         {# <img src="{{ asset('img/uploads/products/' ~ (product.images|last)?.name) }}" alt=""
             class="w-100 h-100 object-fit-contain"> #}
         {# {% if product.images is not empty %} #}
-        <img src="{{ asset('img/uploads/products/' ~ (product.images|last).name) }}" alt="Dernière image du produit"
+        <img src="{{ vich_uploader_asset(product.images|last, 'imageFile') }}" alt="Dernière image du produit"
             class="img-fluid">
         {# {% endif %} #}
     </div>

@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
 :root {
     --blue-600: #1c64f2;
     --emerald-500: #00bc7dff;
@@ -32,6 +33,7 @@
     --dropdown-toggle-bg: transparent;
     --dropdown-border-color: transparent;
     --datagrid-noresults-placeholder-bg: #ff000014;
+    --user-name-color: rgba(0, 0, 0, 0.65);
 }
 
 body {

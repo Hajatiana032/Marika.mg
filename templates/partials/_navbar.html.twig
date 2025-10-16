@@ -1,7 +1,7 @@
 <div class="container-fluid sticky-top bg-white">
     <nav class="navbar navbar-expand-xl bg-white container">
         <a href="{{ path('app_home') }}" class="navbar-brand d-flex align-items-center">
-            <img src="{{ asset('img/logo.svg') }}" alt="logo" width="30px" height="30px">
+            <img src="{{ asset('build/img/logo.svg') }}" alt="logo" width="30px" height="30px">
             Marika.mg
         </a>
         <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarToggler"
@@ -38,7 +38,7 @@
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 {% if is_granted('ROLE_ADMIN') %}
                 <li class="nav-item">
-                    <a href="{{ path('admin') }}" class="nav-link">
+                    <a href="{{ path('admin') }}" class="nav-link" data-turbo="false">
                         <i class="fa fa-dashboard"></i> Admin
                     </a>
                 </li>
@@ -47,8 +47,8 @@
                     <a href="" class="nav-link d-flex align-items-center">
                         <div class="overflow-hidden bg-danger d-flex flex-shrink-0 align-items-center justify-content-center"
                             style="width: 30px; height: 30px; border-radius: 50%;">
-                            <img src="{{ asset('img/uploads/avatar/' ~ app.user.avatar) }}"
-                                alt="{{ app.user.username }}" class="w-100 h-100 object-fit-cover" />
+                            <img src="{{ vich_uploader_asset(app.user, 'avatarFile') }}" alt="{{ app.user.username }}"
+                                class="w-100 h-100 object-fit-cover" />
                         </div>
                         <span class="ms-1">{{ app.user.username }}</span>
                     </a>
