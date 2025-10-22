@@ -1,11 +1,11 @@
 <div class="container-fluid sticky-top bg-white">
     <nav class="navbar navbar-expand-xl bg-white container">
         <a href="{{ path('app_home') }}" class="navbar-brand d-flex align-items-center">
-            <img src="{{ asset('build/img/logo.svg') }}" alt="logo" width="30px" height="30px">
+            <img src="{{ asset('img/logo.svg') }}" alt="logo" width="30px" height="30px">
             Marika.mg
         </a>
         <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarToggler"
-            aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarToggler">
@@ -29,39 +29,56 @@
             {{ component('SearchForm') }}
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href="{{ path('app_cart') }}" class="nav-link {% if
-                        current_menu is defined and current_menu == 'cart' %}active{% endif %}"><i
-                            class="fa fa-shopping-bag">&nbsp;</i>Mon
-                        panier
-                    </a>
+                    {% set quantity = 0 %}
+                    {% for qty in app.session.get('cart',{}) %}
+                        {% set quantity = quantity + qty %}
+                    {% endfor %}
+                    {% if quantity > 0 %}
+                        <a href="{{ path('app_cart') }}"
+                           class="nav-link position-relative {% if current_menu is defined and current_menu ==
+                               'cart' %}active{% endif %}">
+                            <i class="fa fa-shopping-bag"></i>&nbsp;Mon panier
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill
+                                bg-emerald-500">
+                    {{ quantity }}
+            </span>
+                        </a>
+                    {% else %}
+                        <a href="#" class="nav-link disabled text-muted">
+                            <i class="fa fa-shopping-bag"></i>&nbsp;Panier vide
+                        </a>
+                    {% endif %}
                 </li>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                {% if is_granted('ROLE_ADMIN') %}
-                <li class="nav-item">
-                    <a href="{{ path('admin') }}" class="nav-link" data-turbo="false">
-                        <i class="fa fa-dashboard"></i> Admin
-                    </a>
-                </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a href="" class="nav-link d-flex align-items-center">
-                        <div class="overflow-hidden bg-danger d-flex flex-shrink-0 align-items-center justify-content-center"
-                            style="width: 30px; height: 30px; border-radius: 50%;">
-                            <img src="{{ vich_uploader_asset(app.user, 'avatarFile') }}" alt="{{ app.user.username }}"
-                                class="w-100 h-100 object-fit-cover" />
-                        </div>
-                        <span class="ms-1">{{ app.user.username }}</span>
-                    </a>
-                </li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item">
+                            <a href="{{ path('admin') }}" class="nav-link" data-turbo="false">
+                                <i class="fa fa-dashboard"></i> Admin
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a href="" class="nav-link d-flex align-items-center">
+                            <div
+                                class="overflow-hidden bg-danger d-flex flex-shrink-0 align-items-center justify-content-center"
+                                style="width: 30px; height: 30px; border-radius: 50%;">
+                                <img src="{{ asset('img/uploads/avatar/' ~ app.user.avatar) }}"
+                                     alt="{{ app.user.username }}"
+                                     class="w-100 h-100 object-fit-cover"/>
+                            </div>
+                            <span class="ms-1">{{ app.user.username }}</span>
+                        </a>
+                    </li>
                 {% else %}
-                <li class=" nav-item">
-                    <a href="{{ path('app_register') }}"
-                        class="nav-link {% if current_menu is defined and current_menu == 'register' %}active{% endif %}">Inscription</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_login') }}"
-                        class="nav-link {% if current_menu is defined and current_menu == 'login' %}active{% endif %}">Connexion</a>
-                </li>
+                    <li class=" nav-item">
+                        <a href="{{ path('app_register') }}"
+                           class="nav-link {% if current_menu is defined and current_menu == 'register' %}active{% endif %}">Inscription</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ path('app_login') }}"
+                           class="nav-link {% if current_menu is defined and current_menu == 'login' %}active{% endif %}">Connexion</a>
+                    </li>
                 {% endif %}
             </ul>
         </div>

@@ -4,32 +4,33 @@
         <div class="carousel-inner">
             <div class="carousel-indicators">
                 {% for i in 1..3 %}
-                <button type="button" data-bs-target="#carouselTestimonial" data-bs-slide-to="{{ i - 1 }}"
-                    class="{% if i == 1 %}active{% endif %} bg-emerald-500" aria-current="true"
-                    aria-label="Slide {{ i - 1 }}"></button>
+                    <button type="button" data-bs-target="#carouselTestimonial" data-bs-slide-to="{{ i - 1 }}"
+                            class="{% if i == 1 %}active{% endif %} bg-emerald-500" aria-current="true"
+                            aria-label="Slide {{ i - 1 }}"></button>
                 {% endfor %}
             </div>
             {% for group in testimonials|batch(3,'') %}
-            <div class="carousel-item pb-5 {% if loop.first %}active{% endif %}">
-                <div class="row gy-2">
-                    {% for testimonial in group %}
-                    <div class="col-lg-4">
-                        <div class="card text-center border-emerald-500 border-2 shadow testimonial-card">
-                            <div class="card-header border-0 bg-transparent">
-                                <img src="{{ vich_uploader_asset(testimonial.user, 'avatarFile') }}"
-                                    alt="{{ testimonial.user.username }}" class="w-100 object-fit-contain" height="100">
-                                <div class="card-title">
-                                    {{ testimonial.user.username }}
+                <div class="carousel-item pb-5 {% if loop.first %}active{% endif %}">
+                    <div class="row gy-2">
+                        {% for testimonial in group %}
+                            <div class="col-lg-4">
+                                <div class="card text-center border-emerald-500 border-2 shadow testimonial-card">
+                                    <div class="card-header border-0 bg-transparent">
+                                        <img src="{{ asset('img/uploads/avatar/' ~ testimonial.user.avatar) }}"
+                                             alt="{{ testimonial.user.username }}" class="w-100 object-fit-contain"
+                                             height="100">
+                                        <div class="card-title">
+                                            {{ testimonial.user.username }}
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        {{ testimonial.content }}
+                                    </div>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                {{ testimonial.content }}
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
-            </div>
             {% endfor %}
         </div>
     </div>

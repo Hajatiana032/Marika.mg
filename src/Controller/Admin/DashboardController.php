@@ -21,14 +21,12 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
-use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class DashboardController extends AbstractDashboardController
 {
     public function __construct(
         private readonly ChartBuilderInterface $chartBuilder,
         private readonly CategoryRepository $categoryRepository,
-        private readonly UploaderHelper $uploaderHelper
     ) {
     }
 
@@ -36,25 +34,6 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         return $this->render('admin/dashboard.html.twig', ['chartCategory' => $this->chartCategory()]);
-        // Option 1. You can make your dashboard redirect to some common page of your backend
-        //
-        // 1.1) If you have enabled the "pretty URLs" feature:
-        // return $this->redirectToRoute('admin_user_index');
-        //
-        // 1.2) Same example but using the "ugly URLs" that were used in previous EasyAdmin versions:
-        // $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        // return $this->redirect($adminUrlGenerator->setController(OneOfYourCrudController::class)->generateUrl());
-
-        // Option 2. You can make your dashboard redirect to different pages depending on the user
-        //
-        // if ('jane' === $this->getUser()->getUsername()) {
-        //     return $this->redirectToRoute('...');
-        // }
-
-        // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //
-        // return $this->render('some/path/my-dashboard.html.twig');
     }
 
     public function chartCategory(): Chart
@@ -83,7 +62,7 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setFaviconPath('build/img/logo.svg')
+            ->setFaviconPath('img/logo.svg')
             ->setTitle('<h2 class="fw-bold text-primary text-center">Marika.mg</h2>')->renderContentMaximized();
     }
 
@@ -102,7 +81,7 @@ class DashboardController extends AbstractDashboardController
     public function configureAssets(): Assets
     {
         return Assets::new()
-            ->addWebpackEncoreEntry('admin');
+            ->addAssetMapperEntry('admin');
     }
 
     public function configureActions(): Actions
@@ -138,7 +117,9 @@ class DashboardController extends AbstractDashboardController
             throw new \Exception('Wrong user');
         }
 
+        $avatarUrl = 'img/uploads/avatar/'.$user->getAvatar();
+
         return parent::configureUserMenu($user)
-            ->setAvatarUrl($this->uploaderHelper->asset($user, 'avatarFile'));
+            ->setAvatarUrl($avatarUrl);
     }
 }

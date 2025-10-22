@@ -24,12 +24,26 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    public function latest(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->addSelect('i', 'c', 'b')
+            ->leftJoin('p.images', 'i')
+            ->leftJoin('p.category', 'c')
+            ->leftJoin('p.brand', 'b')
+            ->orderBy('p.createdAt', 'DESC')
+            ->groupBy('c.id')
+            ->setMaxResults(4)
+            ->getQuery()->getResult();
+    }
+
     public function searchProduct(SearchData $search): PaginationInterface
     {
         $qb = $this->createQueryBuilder('p')
-            ->select('p', 'b', 'c')
-            ->join('p.category', 'c')
-            ->join('p.brand', 'b')
+            ->addSelect('i', 'b', 'c')
+            ->leftJoin('p.images', 'i')
+            ->leftJoin('p.category', 'c')
+            ->leftJoin('p.brand', 'b')
             ->orderBy('p.createdAt', 'DESC');
         if ( ! empty($search->q)) {
             $qb->andWhere('MATCH_AGAINST(p.title, p.description) AGAINST(:query BOOLEAN) > 0')

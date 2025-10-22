@@ -1,8 +1,10 @@
 {% for type, contents in app.flashes %}
-    {% for content in contents %}
-        <div class="alert bg-{{ type }} text-{{ content.color }} text-center">
-            <i class="far fa-check-circle">&nbsp;</i>
-            {{ content.message|raw }}
-        </div>
-    {% endfor %}
+    <div {% if type == 'success' or type == 'warning' %}data-controller="confetti"{% endif %}>
+        {% for content in contents %}
+            <div class="alert bg-{{ type }} text-{{ content.color }} text-center">
+                <i class="far fa-check-circle">&nbsp;</i>
+                {{ content.message|raw }}
+            </div>
+        {% endfor %}
+    </div>
 {% endfor %}

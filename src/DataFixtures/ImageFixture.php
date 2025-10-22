@@ -17,11 +17,11 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class ImageFixture extends Fixture implements DependentFixtureInterface
 {
 
-    private string $uploadDir;
+    private string $publicImageDir;
 
     public function __construct(private readonly HttpClientInterface $client)
     {
-        $this->uploadDir = __DIR__.'/../../public/build/img/uploads/products/';
+        $this->publicImageDir = __DIR__.'/../../public/img/uploads/products/';
     }
 
     /**
@@ -60,15 +60,15 @@ class ImageFixture extends Fixture implements DependentFixtureInterface
 
     private function clearDirectory(): void
     {
-        if (is_dir($this->uploadDir)) {
-            foreach (glob($this->uploadDir.'*') as $file) {
+        if (is_dir($this->publicImageDir)) {
+            foreach (glob($this->publicImageDir.'*') as $file) {
                 if (is_file($file)) {
                     unlink($file);
                 }
             }
         } else {
             // Si le dossier n’existe pas, on le crée
-            mkdir($this->uploadDir, 0755, true);
+            mkdir($this->publicImageDir, 0755, true);
         }
     }
 
@@ -98,7 +98,7 @@ class ImageFixture extends Fixture implements DependentFixtureInterface
         $content = $resp->getContent(false);
         $extension = pathinfo($url, PATHINFO_EXTENSION);
         $filename = uniqid('prod-').'.'.$extension;
-        file_put_contents($this->uploadDir.$filename, $content);
+        file_put_contents($this->publicImageDir.$filename, $content);
 
         return $filename;
     }

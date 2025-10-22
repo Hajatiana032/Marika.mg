@@ -25,7 +25,7 @@
                             <div class="carousel-inner">
                                 {% for image in product.images %}
                                     <div class="carousel-item {% if loop.first %}active{% endif %}">
-                                        <img src="{{ asset('build/img/uploads/products/' ~ image.name) }}"
+                                        <img src="{{ asset('img/uploads/products/' ~ image.name) }}"
                                              class="object-fit-contain w-100" height="300" alt="Image {{ loop.index }}">
                                     </div>
                                 {% endfor %}

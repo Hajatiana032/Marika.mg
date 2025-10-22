@@ -2,27 +2,27 @@
     <H1 class="display-4">Quelques catégories</H1>
     <div class="row mt-3 gy-2">
         {% for category in categories %}
-        <div class="col-md-6 col-lg-4">
-            <a href="{{ path('app_shop', {'c': category.slug}) }}" class="text-decoration-none">
-                <div class="card card-category p-0 overflow-hidden border-emerald-500 border-2">
-                    <div class="card-body p-0" style="height: 150px;">
-                        {% for product in category.products|slice(0,1) %}
-                        <div class="h-100">
-                            <img src="{{ vich_uploader_asset(product.images|last, 'imageFile') }}"
-                                alt="{{ category.slug }}" class="w-100 h-100 object-fit-contain
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ path('app_shop', {'c': category.slug}) }}" class="text-decoration-none">
+                    <div class="card card-category p-0 overflow-hidden border-emerald-500 border-2">
+                        <div class="card-body p-0" style="height: 150px;">
+                            {% for product in category.products|slice(0,1) %}
+                                <div class="h-100">
+                                    <img src="{{ asset('img/uploads/products/' ~ product.images|last.name) }}"
+                                         alt="{{ category.slug }}" class="w-100 h-100 object-fit-contain
                                                                      card-img-category">
-                        </div>
-                        {% endfor %}
-                        <div class=" position-absolute z-1
+                                </div>
+                            {% endfor %}
+                            <div class=" position-absolute z-1
                             align-content-center
                             w-100
                             h-100 bottom-0 top-0 title-card-category">
-                            <h5 class="card-title text-center text-white">{{ category.name }}</h5>
+                                <h5 class="card-title text-center text-white">{{ category.name }}</h5>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </a>
-        </div>
+                </a>
+            </div>
         {% endfor %}
     </div>
 </section>

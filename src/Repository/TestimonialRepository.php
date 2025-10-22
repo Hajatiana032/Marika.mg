@@ -16,11 +16,11 @@ class TestimonialRepository extends ServiceEntityRepository
         parent::__construct($registry, Testimonial::class);
     }
 
-    public function latestTestimonials()
+    public function latest()
     {
         return $this->createQueryBuilder('t')
-            ->join('t.User', 'u')
             ->addSelect('u')
+            ->leftJoin('t.User', 'u')
             ->orderBy('t.createdAt', 'DESC')
             ->setMaxResults(9)
             ->getQuery()

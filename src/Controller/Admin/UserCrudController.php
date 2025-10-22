@@ -49,8 +49,8 @@ class UserCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            ImageField::new('avatar', 'Photo de profil')->setBasePath('build/img/uploads/avatar/')->setUploadDir(
-                'build/img/uploads/avatar'
+            ImageField::new('avatar', 'Photo de profil')->setBasePath('img/uploads/avatar/')->setUploadDir(
+                'img/uploads/avatar'
             ),
             IdField::new('id'),
             TextField::new('lastname', 'Nom'),

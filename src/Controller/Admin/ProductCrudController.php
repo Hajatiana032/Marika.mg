@@ -56,7 +56,8 @@ class ProductCrudController extends AbstractCrudController
                 'detail',
                 fn($action) => $action->setIcon('fa fa-eye')->setLabel('<span class="text-success">Détails</span>')
                     ->setHtmlAttributes(['data-turbo' => 'true'])
-            );
+            )
+            ->reorder(Crud::PAGE_INDEX, [Action::DETAIL, Action::EDIT]);
     }
 
 
@@ -67,7 +68,7 @@ class ProductCrudController extends AbstractCrudController
             SlugField::new('slug', 'Slug')->setTargetFieldName('title'),
             AssociationField::new('category', 'Sélectionner la catégorie')->onlyOnForms(),
             AssociationField::new('brand', 'Sélectionner la marque')->onlyOnForms(),
-            MoneyField::new('price', 'Prix')->setCurrency('MGA'),
+            MoneyField::new('price', 'Prix')->setCurrency('MGA')->setNumDecimals(0),
             IntegerField::new('stock', 'Stock'),
             TextEditorField::new('description')->formatValue(fn($value, $entity) => $entity->getDescription()),
             CollectionField::new('images', 'Images')->setEntryType(ImageFormType::class),

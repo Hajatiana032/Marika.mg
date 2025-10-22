@@ -19,9 +19,9 @@ final class HomeController extends AbstractController
     ): Response {
         return $this->render('home/index.html.twig', [
             'current_menu' => 'home',
-            'latest_products' => $productRepository->findBy([], ['createdAt' => 'DESC'], 4),
-            'categories' => $categoryRepository->findBy([], ['id' => 'DESC'], 6),
-            'testimonials' => $testimonialRepository->latestTestimonials(),
+            'latest_products' => $productRepository->latest(),
+            'categories' => $categoryRepository->someCategories(),
+            'testimonials' => $testimonialRepository->latest(),
         ]);
     }
 

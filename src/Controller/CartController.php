@@ -21,7 +21,6 @@ final class CartController extends AbstractController
         $cart = $request->getSession()->get('cart', []);
         $data = [];
         $total = 0;
-
         foreach ($cart as $id => $quantity) {
             $product = $this->productRepository->find($id);
             $data[] = [
@@ -71,7 +70,7 @@ final class CartController extends AbstractController
             'warning',
             [
                 'color' => 'dark',
-                'message' => 'La quantité <strong>' . $product->getTitle() . '</strong> de votre panier a été mis à jour.',
+                'message' => 'La quantité <strong>'.$product->getTitle().'</strong> de votre panier a été mis à jour.',
             ]
         );
         $request->getSession()->set('cart', $cart, $product);
@@ -95,7 +94,7 @@ final class CartController extends AbstractController
                     'danger',
                     [
                         'color' => 'white',
-                        'message' => '<strong>' . $product->getTitle() . '</strong> a été retiré de votre panier.',
+                        'message' => '<strong>'.$product->getTitle().'</strong> a été retiré de votre panier.',
                     ]
                 );
             }
@@ -119,7 +118,7 @@ final class CartController extends AbstractController
 
         $this->addFlash('danger', [
             'color' => 'white',
-            'message' => '<strong>' . $product->getTitle() . '</strong> a été retiré de votre panier.',
+            'message' => '<strong>'.$product->getTitle().'</strong> a été retiré de votre panier.',
         ]);
 
         return $this->redirectToRoute('app_cart');

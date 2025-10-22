@@ -1,15 +1,7 @@
 <div class="card card-product border-emerald-500 border-2 m-auto">
     <div class="card-header card-header-product border-0 bg-transparent">
-        {#
-        <pre>
-            {{ dump((product.images|last).name) }}
-        </pre> #}
-        {# <img src="{{ asset('img/uploads/products/' ~ (product.images|last)?.name) }}" alt=""
-            class="w-100 h-100 object-fit-contain"> #}
-        {# {% if product.images is not empty %} #}
-        <img src="{{ vich_uploader_asset(product.images|last, 'imageFile') }}" alt="Dernière image du produit"
-            class="img-fluid">
-        {# {% endif %} #}
+        <img src="{{ asset('img/uploads/products/' ~ product.images|last.name) }}" alt="Dernière image du produit"
+             class="img-fluid">
     </div>
     <div class="card-body">
         <h5 class="card-title text-truncate">{{ product.title }}</h5>
@@ -25,6 +17,8 @@
         </div>
     </div>
     <div class="card-footer border-0 bg-transparent">
-        <a href="{{ path('app_cart_add', {id: product.id}) }}" class="btn btn-blue-600 w-100">Ajouter au panier</a>
+        <a href="{{ path('app_cart_add', {id: product.id}) }}" class="btn btn-blue-600 w-100"
+        >Ajouter au
+            panier</a>
     </div>
 </div>
