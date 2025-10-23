@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Brand;
 use App\Entity\Category;
+use App\Entity\City;
 use App\Entity\Product;
 use App\Entity\Testimonial;
 use App\Entity\User;
@@ -72,10 +73,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Tableau de bord', 'fa fa-dashboard');
         yield MenuItem::linkToCrud('Catégories', 'fa fa-tags', Category::class);
         yield MenuItem::linkToCrud('Marques', 'fa fa-tags', Brand::class);
+        yield MenuItem::linkToCrud('Villes', 'fas fa-location', City::class);
         yield MenuItem::linkToCrud('Produits', 'fa fa-boxes', Product::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-boxes', User::class);
         yield MenuItem::linkToCrud('Témoignages', 'fa fa-comments', Testimonial::class);
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
 
     public function configureAssets(): Assets

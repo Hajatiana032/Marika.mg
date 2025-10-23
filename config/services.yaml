@@ -16,9 +16,5 @@ services:
     App\:
         resource: "../src/"
 
-    App\Service\FileUploader:
-        arguments:
-            $targetDirectory: "%kernel.project_dir%/assets/img/uploads/avatar"
-
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -8,7 +8,7 @@
         {{ include('partials/_flash_messages.html.twig') }}
         <div class="table-responsive">
             {% if items %}
-                <table class="table align-middle text-center">
+                <table class="table align-middle text-center table-bordered">
                     <thead>
                     <tr>
                         <th>Photos</th>
@@ -42,10 +42,11 @@
                         </tr>
                     {% endfor %}
                     <tr>
-                        <td colspan="5" class="bg-emerald-500 fw-semibold h4">
+                        <td colspan="4"></td>
+                        <td class="fw-semibold h4 text-center">
                             {{ total|format_currency('MGA', {}, 'FR_mg') }}
                         </td>
-                        <td>
+                        <td class="text-center">
                             <a href="{{ path('app_cart_remove') }}" class="btn btn-danger"><i class="fa
                             fa-trash-can-arrow-up">&nbsp;</i>Vider le panier
                             </a>
@@ -59,5 +60,13 @@
                 </div>
             {% endif %}
         </div>
+        {% if items is not empty %}
+            <div class="text-end">
+                <a href="{{ path('app_order') }}" class="btn btn-outline-blue-600 ms-auto">
+                    <i class="fa fa-check-circle"></i>
+                    Valider la commande
+                </a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

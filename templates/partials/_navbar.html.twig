@@ -33,22 +33,15 @@
                     {% for qty in app.session.get('cart',{}) %}
                         {% set quantity = quantity + qty %}
                     {% endfor %}
-                    {% if quantity > 0 %}
-                        <a href="{{ path('app_cart') }}"
-                           class="nav-link position-relative {% if current_menu is defined and current_menu ==
-                               'cart' %}active{% endif %}">
-                            <i class="fa fa-shopping-bag"></i>&nbsp;Mon panier
-                            <span
-                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill
+                    <a href="{{ path('app_cart') }}"
+                       class="nav-link position-relative {% if current_menu is defined and current_menu ==
+                           'cart' %}active{% endif %}">
+                        <i class="fa fa-shopping-bag"></i>&nbsp;Mon panier
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill
                                 bg-emerald-500">
-                    {{ quantity }}
-            </span>
-                        </a>
-                    {% else %}
-                        <a href="#" class="nav-link disabled text-muted">
-                            <i class="fa fa-shopping-bag"></i>&nbsp;Panier vide
-                        </a>
-                    {% endif %}
+                                {{ quantity }}
+                        </span>
+                    </a>
                 </li>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     {% if is_granted('ROLE_ADMIN') %}

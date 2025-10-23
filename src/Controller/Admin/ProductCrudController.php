@@ -68,7 +68,7 @@ class ProductCrudController extends AbstractCrudController
             SlugField::new('slug', 'Slug')->setTargetFieldName('title'),
             AssociationField::new('category', 'Sélectionner la catégorie')->onlyOnForms(),
             AssociationField::new('brand', 'Sélectionner la marque')->onlyOnForms(),
-            MoneyField::new('price', 'Prix')->setCurrency('MGA')->setNumDecimals(0),
+            MoneyField::new('price', 'Prix')->setCurrency('MGA')->setStoredAsCents(false)->setNumDecimals(0),
             IntegerField::new('stock', 'Stock'),
             TextEditorField::new('description')->formatValue(fn($value, $entity) => $entity->getDescription()),
             CollectionField::new('images', 'Images')->setEntryType(ImageFormType::class),
