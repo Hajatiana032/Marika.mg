@@ -55,7 +55,6 @@ class ProductCrudController extends AbstractCrudController
                 Crud::PAGE_INDEX,
                 'detail',
                 fn($action) => $action->setIcon('fa fa-eye')->setLabel('<span class="text-success">Détails</span>')
-                    ->setHtmlAttributes(['data-turbo' => 'true'])
             )
             ->reorder(Crud::PAGE_INDEX, [Action::DETAIL, Action::EDIT]);
     }

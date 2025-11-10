@@ -17,7 +17,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -25,16 +24,16 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('firstName', TextType::class, [
-                'label' => 'Prénom'
+                'label' => 'Prénom',
             ])
             ->add('lastName', TextType::class, [
-                'label' => 'Nom'
+                'label' => 'Nom',
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Adresse email'
+                'label' => 'Adresse email',
             ])
             ->add('phone', TelType::class, [
-                'label' => 'Téléphone'
+                'label' => 'Téléphone',
             ])
             ->add('address', TextType::class, [
                 'label' => 'Adresse',
@@ -47,15 +46,15 @@ class RegistrationFormType extends AbstractType
                 'attr' => ['class' => 'form-control'],
                 'choices' => [
                     'Antsiranana' => 'Antsiranana',
-                    'Antananarivo' => 'Antananarivo'
-                ]
+                    'Antananarivo' => 'Antananarivo',
+                ],
             ])
             ->add('avatarFile', FileType::class, [
                 'label' => 'Photo de profil',
                 'required' => false,
             ])
             ->add('username', TextType::class, [
-                'label' => "Nom d'utilisateur"
+                'label' => "Nom d'utilisateur",
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'label' => 'Accepter les conditions',
@@ -83,8 +82,7 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -3,7 +3,7 @@
 namespace App\Twig\Components;
 
 use App\Entity\Order;
-use App\Form\OrderType;
+use App\Form\CheckoutType;
 use App\Repository\CityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -40,6 +40,6 @@ final class CheckoutForm extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(OrderType::class, $this->initialFormData);
+        return $this->createForm(CheckoutType::class, $this->initialFormData);
     }
 }

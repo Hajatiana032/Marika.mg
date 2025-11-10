@@ -38,7 +38,7 @@ class Order
     private ?City $city = null;
 
     #[ORM\Column]
-    private ?bool $payOnDelivery = false;
+    private ?bool $payOnDelivery = null;
 
     /**
      * @var Collection<int, OrderProduct>
@@ -48,6 +48,22 @@ class Order
 
     #[ORM\Column]
     private ?int $totalPrice = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $isDelivered = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $deliveredAt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?PaymentMethod $paymentMethod = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $stripeSessionId = null;
 
     public function __construct()
     {
@@ -155,7 +171,7 @@ class Order
 
     public function addOrderProduct(OrderProduct $orderProduct): static
     {
-        if (!$this->orderProducts->contains($orderProduct)) {
+        if ( ! $this->orderProducts->contains($orderProduct)) {
             $this->orderProducts->add($orderProduct);
             $orderProduct->setOrder($this);
         }
@@ -183,6 +199,66 @@ class Order
     public function setTotalPrice(int $totalPrice): static
     {
         $this->totalPrice = $totalPrice;
+
+        return $this;
+    }
+
+    public function isDelivered(): ?bool
+    {
+        return $this->isDelivered;
+    }
+
+    public function setIsDelivered(?bool $isDelivered): static
+    {
+        $this->isDelivered = $isDelivered;
+
+        return $this;
+    }
+
+    public function getDeliveredAt(): ?\DateTimeImmutable
+    {
+        return $this->deliveredAt;
+    }
+
+    public function setDeliveredAt(?\DateTimeImmutable $deliveredAt): static
+    {
+        $this->deliveredAt = $deliveredAt;
+
+        return $this;
+    }
+
+    public function getPaymentMethod(): ?PaymentMethod
+    {
+        return $this->paymentMethod;
+    }
+
+    public function setPaymentMethod(?PaymentMethod $paymentMethod): static
+    {
+        $this->paymentMethod = $paymentMethod;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getStripeSessionId(): ?string
+    {
+        return $this->stripeSessionId;
+    }
+
+    public function setStripeSessionId(?string $stripeSessionId): static
+    {
+        $this->stripeSessionId = $stripeSessionId;
 
         return $this;
     }

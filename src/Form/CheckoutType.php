@@ -4,16 +4,16 @@ namespace App\Form;
 
 use App\Entity\City;
 use App\Entity\Order;
+use App\Entity\PaymentMethod;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OrderType extends AbstractType
+class CheckoutType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -41,10 +41,11 @@ class OrderType extends AbstractType
                 'choice_value' => 'id',
                 'placeholder' => 'Sélectionner une ville',
             ])
-            ->add('payOnDelivery', CheckboxType::class, [
-                'label' => 'Payer à la livraison',
-                'attr' => ['class' => 'form-check-input border-blue-600 border-2'],
-                'required' => false,
+            ->add('paymentMethod', EntityType::class, [
+                'class' => PaymentMethod::class,
+                'label' => 'Mode de paiement',
+                'attr' => ['class' => 'form-control'],
+                'expanded' => true,
             ]);
     }
 

@@ -1,0 +1,133 @@
+{% extends "@!EasyAdmin/crud/index.html.twig" %}
+{% block main %}
+    <style>
+        table {
+            table-layout: fixed;
+        }
+    </style>
+    <div class="container">
+        {{ include('@!EasyAdmin/crud/includes/_filters_modal.html.twig') }}
+        {% for entity in entities %}
+            {% block delete_form %}
+                {{ parent() }}
+            {% endblock %}
+            {% set order = entity.instance %}
+            <h4>Commande N°: #{{ order.id }}</h4>
+            <h4>Status: <span class="badge badge-{{ order.isdelivered == false ? 'danger' : 'success' }} p-2">{{ order
+                    .isdelivered == false ? 'Non livré' : 'Livré' }}</span>
+            </h4>
+            <div class="row">
+                <div class="col-xl-6">
+                    <div class="table-responsive">
+                        {% block entity_actions %}
+                            Actions:
+                            {{ parent() }}
+                        {% endblock %}
+                        <table class="table table-bordered align-middle">
+                            <caption class="caption-top">
+                                Commande du:
+                                <span class="badge badge-dark p-2">{{ order.createdat|date('d-M-Y') }}</span>
+                            </caption>
+                            {% if order.isdelivered == true %}
+                                <caption class="caption-top">
+                                    Commande livrée le: <span
+                                        class="badge badge-success p-2">{{ order.deliveredat|date('d-M-Y à H:i') }}</span>
+                                </caption>
+                            {% endif %}
+                            <caption class="caption-top">Infos sur le client</caption>
+                            <tbody>
+                            <tr>
+                                <th>Nom</th>
+                                <td>{{ order.lastname }}</td>
+                            </tr>
+                            <tr>
+                                <th>Prénom</th>
+                                <td>{{ order.firstname }}</td>
+                            </tr>
+                            <tr>
+                                <th>Numéro de téléphone</th>
+                                <td>{{ order.phone }}</td>
+                            </tr>
+                            <tr>
+                                <th>Adresse</th>
+                                <td>{{ order.address }}</td>
+                            </tr>
+                            <tr>
+                                <th>Code postal</th>
+                                <td>{{ order.zipcode }}</td>
+                            </tr>
+                            <tr>
+                                <th>Ville</th>
+                                <td>{{ order.city.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Type de paiement</th>
+                                <td>
+                                    {% if order.payondelivery %}
+                                        <span class="badge badge-success p-2">Payer à la livraison</span>
+                                    {% else %}
+                                        <span class="badge badge-secondary p-2">Payer en ligne</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Livraison</th>
+                                <td>{{ order.city.shippingcost|format_currency('mga',{},'fr_mg') }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-xl-12 my-auto">
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle">
+                            <caption class="caption-top">Infos sur les produits</caption>
+                            <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Titre</th>
+                                <th>Prix</th>
+                                <th>Quantité</th>
+                                <th>Catégorie</th>
+                                <th>Marque</th>
+                                <th>Total</th>
+                            </tr>
+                            </thead>
+                            {% set total = 0 %}
+                            <tbody>
+                            {% for item in order.orderproducts %}
+                                {% set product = item.product %}
+                                <tr>
+                                    <td><img src="{{ asset('img/uploads/products/' ~ (product.images|last).name) }}"
+                                             alt="image" class="w-100 object-fit-contain" height="50"></td>
+                                    <td>{{ product.title }}</td>
+                                    <td>{{ product.price|format_currency('MGA',{},'fr_MG') }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>{{ product.category.name }}</td>
+                                    <td>{{ product.brand.name }}</td>
+                                    <td>{{ (product.price * item.quantity)|format_currency('MGA',{},'fr_MG') }}</td>
+                                </tr>
+                                {% set total = total + product.price * item.quantity %}
+                            {% endfor %}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="6"><span></span></td>
+                                <td>{{ total|format_currency('MGA',{},'fr_mg') }}</td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <h5>Montant total: {{ order.totalprice|format_currency('mga',{},'fr_mg') }}</h5>
+            {% if not loop.last %}
+                <hr class="mb-5">
+            {% endif %}
+        {% else %}
+            {{ block('table_body_empty') }}
+        {% endfor %}
+    </div>
+    {% set some_results_are_hidden =false %}
+    {{ block('paginator') }}
+{% endblock %}

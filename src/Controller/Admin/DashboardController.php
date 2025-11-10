@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Brand;
 use App\Entity\Category;
 use App\Entity\City;
+use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\Testimonial;
 use App\Entity\User;
@@ -75,7 +76,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Marques', 'fa fa-tags', Brand::class);
         yield MenuItem::linkToCrud('Villes', 'fas fa-location', City::class);
         yield MenuItem::linkToCrud('Produits', 'fa fa-boxes', Product::class);
-        yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-boxes', User::class);
+        yield MenuItem::linkToCrud('Commandes', 'fa fa-receipt', Order::class);
+        yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', User::class);
         yield MenuItem::linkToCrud('Témoignages', 'fa fa-comments', Testimonial::class);
     }
 
