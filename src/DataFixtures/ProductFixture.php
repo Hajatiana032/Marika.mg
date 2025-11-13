@@ -22,7 +22,8 @@ class ProductFixture extends Fixture
     public function __construct(
         private readonly HttpClientInterface $client,
         private readonly SluggerInterface $slugger
-    ) {}
+    ) {
+    }
 
     /**
      * @throws TransportExceptionInterface
@@ -41,17 +42,17 @@ class ProductFixture extends Fixture
              * Get category reference by slug.
              */
             $category = $this->getCategoryReference($item['category']);
-            if (! $category) {
+            if ( ! $category) {
                 continue;
             }
 
-            if (! isset($item['brand'])) {
+            if ( ! isset($item['brand'])) {
                 continue;
             }
             $slug = $this->slugger->slug($item['brand'])->lower();
             $brand = $this->getBrandReference($slug);
 
-            if (! $brand) {
+            if ( ! $brand) {
                 continue;
             }
 
@@ -59,14 +60,14 @@ class ProductFixture extends Fixture
             $product->setTitle($item['title']);
             $product->setSlug($this->slugger->slug($item['title'])->lower());
             $product->setDescription($item['description']);
-            $product->setPrice($item['price']);
+            $product->setPrice($item['price'] * 2000);
             $product->setStock($item['stock']);
             $product->setCategory($category);
             $product->setBrand($brand);
 
             $manager->persist($product);
 
-            $this->addReference(self::PRODUCT_IMAGE_REFERENCE . $key, $product);
+            $this->addReference(self::PRODUCT_IMAGE_REFERENCE.$key, $product);
         }
 
         $manager->flush();
@@ -80,8 +81,8 @@ class ProductFixture extends Fixture
      */
     private function getCategoryReference(string $slug): ?Category
     {
-        $refKey = CategoryFixture::CATEGORY_PRODUCT_REFERENCE . $slug;
-        if (! $this->hasReference($refKey, Category::class)) {
+        $refKey = CategoryFixture::CATEGORY_PRODUCT_REFERENCE.$slug;
+        if ( ! $this->hasReference($refKey, Category::class)) {
             return null;
         }
 
@@ -90,8 +91,8 @@ class ProductFixture extends Fixture
 
     private function getBrandReference(string $slug): ?Brand
     {
-        $refKey = BrandFixture::BRAND_PRODUCT_REFERENCE . $slug;
-        if (! $this->hasReference($refKey, Brand::class)) {
+        $refKey = BrandFixture::BRAND_PRODUCT_REFERENCE.$slug;
+        if ( ! $this->hasReference($refKey, Brand::class)) {
             return null;
         }
 

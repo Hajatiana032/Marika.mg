@@ -13,7 +13,7 @@ class OrderProduct
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orderProducts')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'orderProducts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Order $_order = null;
 

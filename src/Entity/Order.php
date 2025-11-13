@@ -37,9 +37,6 @@ class Order
     #[ORM\ManyToOne(inversedBy: 'orders')]
     private ?City $city = null;
 
-    #[ORM\Column]
-    private ?bool $payOnDelivery = null;
-
     /**
      * @var Collection<int, OrderProduct>
      */
@@ -65,6 +62,9 @@ class Order
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $stripeSessionId = null;
 
+    /**
+     * @throws \DateMalformedStringException
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable('now', new \DateTimeZone('Indian/Antananarivo'));
@@ -149,18 +149,6 @@ class Order
         return $this;
     }
 
-    public function isPayOnDelivery(): ?bool
-    {
-        return $this->payOnDelivery;
-    }
-
-    public function setPayOnDelivery(bool $payOnDelivery): static
-    {
-        $this->payOnDelivery = $payOnDelivery;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, OrderProduct>
      */
@@ -206,18 +194,6 @@ class Order
     public function isDelivered(): ?bool
     {
         return $this->isDelivered;
-    }
-
-    public function setIsDelivered(?bool $isDelivered): static
-    {
-        $this->isDelivered = $isDelivered;
-
-        return $this;
-    }
-
-    public function getDeliveredAt(): ?\DateTimeImmutable
-    {
-        return $this->deliveredAt;
     }
 
     public function setDeliveredAt(?\DateTimeImmutable $deliveredAt): static

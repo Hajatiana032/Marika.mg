@@ -61,8 +61,10 @@
     <tr>
         <th>Type de paiement</th>
         <td>
-            {% if order.payondelivery %}
+            {% if order.status == 'cod' %}
                 <span>Payer à la livraison</span>
+            {% else %}
+                <span>Paiement par carte(Stripe)</span>
             {% endif %}
         </td>
     </tr>

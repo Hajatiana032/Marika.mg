@@ -2,44 +2,58 @@
 
 namespace App\Service;
 
+use App\Repository\ProductRepository;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
-use Stripe\Stripe;
+use Stripe\StripeClient;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class StripeService
+readonly class StripeService
 {
-    public function __construct(private readonly RequestStack $request)
-    {
+    public function __construct(
+        private RequestStack $request,
+        private string $stripeSK,
+        private ProductRepository $productRepository,
+    ) {
     }
 
     /**
      * @throws ApiErrorException
      */
-    public function checkout(string $stripeSK): Session
+    public function checkout(string $urlSuccess, string $urlCancel, string $sessionId): Session
     {
         $cart = $this->request->getSession()->get('cart', []);
-        Stripe::setApiKey($stripeSK);
 
-        return Session::create([
-            'line_items' => [
-                [
-                    'price_data' => [
-                        'currency' => 'usd',
-                        'product_data' => [
-                            'name' => 'T-shirt',
-                        ],
-                        'unit_amount' => 2000,
+        $stripe = new StripeClient($this->stripeSK);
+
+        $lineItems = [];
+        foreach ($cart as $id => $quantity) {
+            $product = $this->productRepository->find($id);
+
+            if ( ! $product) {
+                continue;
+            }
+
+            $image = $product->getImages()->last();
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'mga',
+                    'product_data' => [
+                        'name' => $product->getTitle(),
                     ],
-                    'quantity' => 1,
+                    'unit_amount' => $product->getPrice(),
                 ],
-            ],
-            'payment_method_types' => ['card'],
+                'quantity' => $quantity,
+            ];
+        }
+
+        return $stripe->checkout->sessions->create([
+            'line_items' => $lineItems,
             'mode' => 'payment',
-            'success_url' => 'http://localhost:4242/success',
-            'cancel_url' => 'http://localhost:4242/cancel',
+            'success_url' => $urlSuccess,
+            'cancel_url' => $urlCancel,
+            'shipping_address_collection' => ['allowed_countries' => ['MG']],
         ]);
     }
-
 
 }

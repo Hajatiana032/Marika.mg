@@ -75,7 +75,7 @@ class OrderCrudController extends AbstractCrudController
     public function configureFilters(
         Filters $filters
     ): Filters {
-        return $filters->add(BooleanFilter::new('payOnDelivery', 'Paiement à la livraison'))
+        return $filters
             ->add(DateTimeFilter::new('createdAt', 'Date de création'))
             ->add(BooleanFilter::new('isDelivered', 'Livraison effectué'));
     }

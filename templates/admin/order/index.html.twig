@@ -7,6 +7,7 @@
     </style>
     <div class="container">
         {{ include('@!EasyAdmin/crud/includes/_filters_modal.html.twig') }}
+        {{ block('batch_actions') }}
         {% for entity in entities %}
             {% block delete_form %}
                 {{ parent() }}
@@ -22,6 +23,9 @@
                         {% block entity_actions %}
                             Actions:
                             {{ parent() }}
+                            <input type="checkbox"
+                                   class="form-check-input border-2 border-danger shadow-none form-batch-checkbox-all"
+                                   id="form-batch-checkbox-all">
                         {% endblock %}
                         <table class="table table-bordered align-middle">
                             <caption class="caption-top">
@@ -63,10 +67,20 @@
                             <tr>
                                 <th>Type de paiement</th>
                                 <td>
-                                    {% if order.payondelivery %}
-                                        <span class="badge badge-success p-2">Payer à la livraison</span>
-                                    {% else %}
-                                        <span class="badge badge-secondary p-2">Payer en ligne</span>
+                                    {% if order.status == 'cod' %}
+                                        <span class="badge badge-success p-2">Paiement à la livraison</span>
+                                    {% endif %}
+                                    {% if order.status == 'pending' %}
+                                        <span class="badge bg-warning p-2">En attente du paiement(Stripe <i
+                                                class="fab fa-stripe"></i>)
+                                        </span>
+                                    {% endif %}
+                                    {% if order.status == 'stripe' %}
+                                        <span class="badge badge-success p-2">Paiement effectué(Stripe<i class="fab
+                                        fa-stripe"></i>)</span>
+                                    {% endif %}
+                                    {% if order.status == 'canceled' %}
+                                        <span class="badge badge-danger p-2 text-danger">Paiement annuler</span>
                                     {% endif %}
                                 </td>
                             </tr>

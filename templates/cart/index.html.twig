@@ -28,12 +28,10 @@
                             <td>{{ item.product.title }}</td>
                             <td>
                                 <a href="{{ path('app_cart_subtract',{id:item.product.id}) }}" class="link-emerald-500"><i
-                                        class="far
-                                                                fa-minus-square"></i></a>
+                                        class="far fa-minus-square"></i></a>
                                 {{ item.quantity }}
                                 <a href="{{ path('app_cart_add', {id: item.product.id}) }}" class="link-emerald-500"><i
-                                        class="far
-                                                                fa-plus-square"></i></a>
+                                        class="far fa-plus-square"></i></a>
                             </td>
                             <td>{{ item.product.price|format_currency('MGA', {}, 'FR_mg') }}</td>
                             <td>{{ item.total|format_currency('MGA',{},'FR_mg') }}</td>

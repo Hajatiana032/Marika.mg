@@ -22,10 +22,14 @@
                 'data-model': 'cityId'}}) }}
         </div>
         <div class="col-xl-6">
-            {{ form_row(form.paymentMethod) }}
+            {{ form_label(form.paymentMethod) }}
+            <i class="fa fa-hand-holding-dollar"></i>&nbsp;
+            <i class="fab fa-stripe"></i>
+            {{ form_widget(form.paymentMethod) }}
+            {{ form_errors(form.paymentMethod) }}
         </div>
         <div class="text-end">
-            <button type="submit" class="btn btn-lg btn-outline-blue-600">
+            <button type="submit" class="btn btn-lg btn-outline-blue-600" data-turbo="false">
                 Continuer
                 <i class="fa fa-arrow-right-long"></i>
             </button>
