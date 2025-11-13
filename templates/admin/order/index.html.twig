@@ -7,7 +7,6 @@
     </style>
     <div class="container">
         {{ include('@!EasyAdmin/crud/includes/_filters_modal.html.twig') }}
-        {{ block('batch_actions') }}
         {% for entity in entities %}
             {% block delete_form %}
                 {{ parent() }}
