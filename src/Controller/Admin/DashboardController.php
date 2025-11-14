@@ -9,7 +9,13 @@ use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\Testimonial;
 use App\Entity\User;
+use App\Repository\BrandRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\CityRepository;
+use App\Repository\OrderRepository;
+use App\Repository\ProductRepository;
+use App\Repository\TestimonialRepository;
+use App\Repository\UserRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -27,33 +33,102 @@ use Symfony\UX\Chartjs\Model\Chart;
 class DashboardController extends AbstractDashboardController
 {
     public function __construct(
+        private readonly UserRepository $userRepository,
         private readonly ChartBuilderInterface $chartBuilder,
         private readonly CategoryRepository $categoryRepository,
+        private readonly BrandRepository $brandRepository,
+        private readonly ProductRepository $productRepository,
+        private readonly OrderRepository $orderRepository,
+        private readonly CityRepository $cityRepository,
+        private readonly TestimonialRepository $testimonialRepository
     ) {
     }
 
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        return $this->render('admin/dashboard.html.twig', ['chartCategory' => $this->chartCategory()]);
+        return $this->render('admin/dashboard.html.twig', [
+            'users' => $this->userRepository->findAll(),
+            'categories' => $this->categoryRepository->findAll(),
+            'brands' => $this->brandRepository->findAll(),
+            'products' => $this->productRepository->findAll(),
+            'orders' => $this->orderRepository->findAll(),
+            'cities' => $this->cityRepository->findAll(),
+            'testimonials' => $this->testimonialRepository->findAll(),
+            'chartUser' => $this->chartUser(),
+            'chartOrders' => $this->chartOrders(),
+        ]);
     }
 
-    public function chartCategory(): Chart
+    public function chartUser(): Chart
     {
         $chart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
-        $categories = $this->categoryRepository->findAll();
-        $labels = [];
+        $users = $this->userRepository->findAll();
+        $admins = 0;
+        $simpleUsers = 0;
         $data = [];
-        foreach ($categories as $category) {
-            $labels[] = $category->getName();
-            $data[] = count($category->getProducts());
+        foreach ($users as $user) {
+            $roles = $user->getRoles();
+            if (in_array('ROLE_ADMIN', $roles)) {
+                $admins++;
+            } else {
+                $simpleUsers++;
+            }
         }
         $chart->setData([
-            'labels' => $labels,
+            'labels' => [
+                'Simple utilisateurs',
+                'Administrateur',
+            ],
             'datasets' => [
                 [
-                    'label' => 'Catégories',
-                    'data' => $data,
+                    'label' => 'Nombre d\'utilisateurs',
+                    'data' => [$simpleUsers, $admins],
+                    'backgroundColor' => ['rgba(13,110,253,1)', 'rgba(255,193,7,1)'],
+                ],
+            ],
+        ]);
+
+        return $chart;
+    }
+
+    public function chartOrders(): Chart
+    {
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
+        $orders = $this->orderRepository->findAll();
+        $cod = 0;
+        $stripe = 0;
+        $pending = 0;
+        $canceled = 0;
+        $data = [];
+        foreach ($orders as $order) {
+            if ($order->getStatus() === 'cod') {
+                $cod++;
+            } elseif ($order->getStatus() === 'stripe') {
+                $stripe++;
+            } elseif ($order->getStatus() === 'pending') {
+                $pending++;
+            } else {
+                $canceled++;
+            }
+        }
+        $chart->setData([
+            'labels' => [
+                'A la livraison',
+                'Par carte(Stripe)',
+                'En attente',
+                'Annuler',
+            ],
+            'datasets' => [
+                [
+                    'label' => 'Paiement',
+                    'data' => [$cod, $stripe, $pending, $canceled],
+                    'backgroundColor' => [
+                        'rgba(13,110,253,1)',
+                        'rgba(25,135,84,1)',
+                        'rgba(255,193,7,1)',
+                        'rgba(220,38,38,1)',
+                    ],
                 ],
             ],
         ]);
@@ -114,6 +189,9 @@ class DashboardController extends AbstractDashboardController
             );
     }
 
+    /**
+     * @throws \Exception
+     */
     public function configureUserMenu(UserInterface $user): UserMenu
     {
         if ( ! $user instanceof User) {

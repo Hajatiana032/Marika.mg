@@ -1,14 +1,72 @@
-{% extends '@EasyAdmin/layout.html.twig' %}
+{% extends '@!EasyAdmin/layout.html.twig' %}
 
 {% block page_title %}
-Tableau de bord
+    Tableau de bord
+{% endblock %}
+
+{% block importmap %}
+    {{ parent() }}
 {% endblock %}
 
 {% block main %}
-<h1 class="">Tableau de bord</h1>
-<div class="row">
-    <div class="col-12">
-        {{ render_chart(chartCategory) }}
+    <h1 class="">Tableau de bord</h1>
+    <div class="row gy-2">
+        <div class="col-xl-3">
+            <div class="card">
+                <div class="card-body bg-primary">
+                    <h5 class="text-white">Inscrits: {{ users|length }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="card h-100">
+                <div class="card-body bg-warning">
+                    <h5 class="text-dark">Catégories: {{ categories|length }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="card h-100">
+                <div class="card-body bg-success">
+                    <h5 class="text-white">Marques: {{ brands|length }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="card h-100">
+                <div class="card-body bg-secondary">
+                    <h5 class="text-white">Produits: {{ products|length }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="card h-100">
+                <div class="card-body bg-danger">
+                    <h5 class="text-white">Commandes: {{ orders|length }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="text-dark">Villes: {{ cities|length }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="card bg-primary">
+                <div class="card-body">
+                    <h5 class="text-light">Témoignages: {{ testimonials|length }}</h5>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+    <div class="row">
+        <div class="col-xl-6">
+            {{ render_chart(chartUser) }}
+        </div>
+        <div class="col-xl-6">
+            {{ render_chart(chartOrders) }}
+        </div>
+    </div>
 {% endblock %}
